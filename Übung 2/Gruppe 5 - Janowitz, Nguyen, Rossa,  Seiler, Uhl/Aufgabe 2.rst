@@ -6,6 +6,19 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 
 
 1.
+	* Verändern Sie den Rückgabewert im Programm und starten Sie es erneut. Ist der Rückgabewert nun 		  anders?
+
+		Ja, den der Rückgabwert wird direkt ins Register %ebx geschrieben und dann beim Systemcall 			übergeben worden
+
+	* Fügen Sie ein neues Target zu Ihrem Makefile das die Anzahl der Zeilen in main.s zählt. Verwenden 	  Sie dazu das Werkzeug wc (word count) so: wc -l main.s. 
+
+**Todo**
+		.. include:: first_programm/main.s
+			:code:
+
+	* Was muss man am Anfang der Zeile eines Makefile-Targets beachten?
+
+**Todo**
 
 	|
 
@@ -108,6 +121,7 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 	* Modify the maximum program to use an ending address rather than the number 0 to know when
 	  to stop.
 
+**Todo**
 	.. include:: maximum_ending_address/maximum.s
 		:code: 
 

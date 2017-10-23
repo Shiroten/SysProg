@@ -368,18 +368,57 @@ ul.auto-toc {
 <dd>Roman Seiler, Alexander Uhl</dd>
 </dl>
 <ol class="arabic">
-<li><div class="first line-block">
+<li><ul class="first">
+<li><p class="first">Verändern Sie den Rückgabewert im Programm und starten Sie es erneut. Ist der Rückgabewert nun                  anders?</p>
+<blockquote>
+<p>Ja, den der Rückgabwert wird direkt ins Register %ebx geschrieben und dann beim Systemcall                      übergeben worden</p>
+</blockquote>
+</li>
+<li><p class="first">Fügen Sie ein neues Target zu Ihrem Makefile das die Anzahl der Zeilen in main.s zählt. Verwenden       Sie dazu das Werkzeug wc (word count) so: wc -l main.s.</p>
+</li>
+</ul>
+</li>
+</ol>
+<dl class="docutils">
+<dt><strong>Todo</strong></dt>
+<dd><blockquote class="first">
+<pre class="code literal-block">
+# Bartlett, chapter 3
+
+.section .data
+.section .text
+
+.globl _start
+
+_start:
+    movl $1, %eax    # Nr. des Systemaufruf
+    movl $3, %ebx   # Exit Code
+    int $0x80        # Systemaufruf
+
+# vim: expandtab ts=4 sw=4
+</pre>
+</blockquote>
+<ul class="last simple">
+<li>Was muss man am Anfang der Zeile eines Makefile-Targets beachten?</li>
+</ul>
+</dd>
+</dl>
+<p><strong>Todo</strong></p>
+<blockquote>
+<div class="line-block">
 <div class="line"><br /></div>
 </div>
-</li>
+</blockquote>
+<ol class="arabic" start="2">
 <li><blockquote class="first">
 <p><strong>Know the Concepts</strong></p>
-<ul class="simple">
-<li>What does if mean if a line in the program starts with the ’#’ character?</li>
-</ul>
-<p>The line is a comment and won’t be compiled</p>
 </blockquote>
 <ul>
+<li><p class="first">What does if mean if a line in the program starts with the ’#’ character?</p>
+<blockquote>
+<p>The line is a comment and won’t be compiled</p>
+</blockquote>
+</li>
 <li><p class="first">What is the difference between an assembly language file and an object code file?</p>
 <blockquote>
 <p>The assembly file contains human readable code, whereas the object file contains machine                        readable code</p>
@@ -575,7 +614,11 @@ loop_exit:
 <li>Modify the maximum program to use an ending address rather than the number 0 to know when
 to stop.</li>
 </ul>
-<pre class="code literal-block">
+</li>
+</ol>
+<dl class="docutils">
+<dt><strong>Todo</strong></dt>
+<dd><pre class="code first literal-block">
 # Finding a Maximum with ending adress, Bartlett PGU Chapter 3
 
     # ----- data section -----
@@ -666,10 +709,12 @@ instruction movl $_start, %eax ?</p>
 </blockquote>
 </li>
 </ul>
-<div class="line-block">
+<div class="last line-block">
 <div class="line"><br /></div>
 </div>
-</li>
+</dd>
+</dl>
+<ol class="arabic" start="3">
 <li><blockquote class="first">
 <p><strong>Going Further</strong></p>
 </blockquote>
