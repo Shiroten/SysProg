@@ -1,0 +1,43 @@
+GAS LISTING maximum.s 			page 1
+
+
+   1              	# Finding a Maximum, Bartlett PGU Chapter 3
+   2              	
+   3              	    # ----- data section -----
+   4              		.section .data
+   5              	
+   6              	data_items:                       #These are the data items
+   7 0000 03000000 		.long 3,67,34,222,45,75,54,34,44,33,22,11,66,0
+   7      43000000 
+   7      22000000 
+   7      DE000000 
+   7      2D000000 
+   8              	
+   9              	    # ----- text section -----
+  10              		.section .text
+  11              		.globl _start
+  12              	_start:
+  13 0000 BF000000 		movl    $0, %edi                    # move 0 into the index register
+  13      00
+  14 0005 8B04BD00 		movl    data_items(,%edi,4), %eax   # load the first byte of data
+  14      000000
+  15 000c 89C3     		movl    %eax, %ebx                  # since this is the first item, %eax is
+  16              		                                    # the biggest
+  17              	start_loop:	                            # start loop
+  18 000e 83FA06   		cmpl    $6, %edx                    # check to see if we've hit the end
+  19 0011 7410     		je      loop_exit
+  20 0013 47       		incl    %edi                        # load next value
+  21 0014 8B04BD00 		movl    data_items(,%edi,4), %eax 
+  21      000000
+  22 001b 39D8     		cmpl    %ebx, %eax                  # compare values
+  23 001d 7DEF     		jge     start_loop                  # jump to loop beginning if the new 
+  24              		                                    # one isn't bigger
+  25 001f 89C3     		movl    %eax, %ebx                  # move the value as the largest 
+  26 0021 EBEB     		jmp     start_loop                  # jump to loop beginning
+  27              	loop_exit:
+  28 0023 B8010000 	    movl    $1, %eax                    #1 is the exit() syscall
+  28      00
+  29 0028 CD80     	    int     $0x80
+  30              	
+  31              	
+  32              	# vim: expandtab ts=4 sw=4

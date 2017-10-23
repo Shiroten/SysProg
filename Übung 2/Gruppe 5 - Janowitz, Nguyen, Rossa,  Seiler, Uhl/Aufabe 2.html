@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
+<title>Gruppe 5 - Übung 2</title>
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id: html4css1.css 7952 2016-07-26 18:15:59Z milde $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+.subscript {
+  vertical-align: sub;
+  font-size: smaller }
+
+.superscript {
+  vertical-align: super;
+  font-size: smaller }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+object[type="image/svg+xml"], object[type="application/x-shockwave-flash"] {
+  overflow: hidden;
+}
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title, .code .error {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left, table.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right, table.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table.align-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: inherit }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+.align-top    {
+  vertical-align: top }
+
+.align-middle {
+  vertical-align: middle }
+
+.align-bottom {
+  vertical-align: bottom }
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block, pre.math, pre.code {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+pre.code .ln { color: grey; } /* line numbers */
+pre.code, code { background-color: #eeeeee }
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+/* "booktabs" style (no vertical lines) */
+table.docutils.booktabs {
+  border: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.docutils.booktabs * {
+  border: 0px;
+}
+table.docutils.booktabs th {
+  border-bottom: thin solid;
+  text-align: left;
+}
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body>
+<div class="document" id="gruppe-5-ubung-2">
+<h1 class="title">Gruppe 5 - Übung 2</h1>
+
+<dl class="docutils">
+<dt>Von:    Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa</dt>
+<dd>Roman Seiler, Alexander Uhl</dd>
+</dl>
+<ol class="arabic">
+<li><div class="first line-block">
+<div class="line"><br /></div>
+</div>
+</li>
+<li><blockquote class="first">
+<p><strong>Know the Concepts</strong></p>
+<ul class="simple">
+<li>What does if mean if a line in the program starts with the ’#’ character?</li>
+</ul>
+<p>The line is a comment and won’t be compiled</p>
+</blockquote>
+<ul>
+<li><p class="first">What is the difference between an assembly language file and an object code file?</p>
+<blockquote>
+<p>The assembly file contains human readable code, whereas the object file contains machine                        readable code</p>
+</blockquote>
+</li>
+<li><p class="first">What does the linker do?</p>
+<blockquote>
+<p>The linker combines object files that have dependencies to one another</p>
+</blockquote>
+</li>
+<li><p class="first">How do you check the result status code of the last program you ran?</p>
+<blockquote>
+<p>With the shell command &quot;Echo $?&quot;</p>
+</blockquote>
+</li>
+<li><p class="first">What is the difference between movl $1, %eax and movl 1, %eax ?</p>
+<blockquote>
+<p>Movl $1 %eax moves the value one into the %eax register,
+movl 1 %eax moves the content at the address   one into %eax</p>
+</blockquote>
+</li>
+<li><p class="first">Which register holds the system call number?</p>
+<blockquote>
+<p>The %eax register</p>
+</blockquote>
+</li>
+<li><p class="first">What are indexes used for?</p>
+<blockquote>
+<p>An index is used to access data in an array</p>
+</blockquote>
+</li>
+<li><p class="first">Why do indexes usually start at 0?</p>
+<blockquote>
+<p>The index is zero because address_of_array + index retrieves the first item of the array</p>
+</blockquote>
+</li>
+<li><p class="first">If I issued the command movl data_items(,%edi,4), %eax and data_items was address
+3634 and %edi held the value 13, what address would you be using to move into %eax ?</p>
+<blockquote>
+<p>3643 + 4 * 13 = 3695</p>
+</blockquote>
+</li>
+<li><p class="first">List the general-purpose registers.</p>
+<blockquote>
+<p>Eax, ebx, ecx, edx, edi, esi</p>
+</blockquote>
+</li>
+<li><p class="first">What is the difference between movl and movb ?</p>
+<blockquote>
+<p>Movl moves a whole word, movb only moves a byte</p>
+</blockquote>
+</li>
+<li><p class="first">What is flow control?</p>
+<blockquote>
+<p>Flow control are structures that decide the path the program takes, e.g. if-construct</p>
+</blockquote>
+</li>
+<li><p class="first">What does a conditional jump do?</p>
+<blockquote>
+<p>A conditional jump only jumps to the specified routine if the comparison of two values holds true</p>
+</blockquote>
+</li>
+<li><p class="first">What things do you have to plan for when writing a program?</p>
+<blockquote>
+<p>You have to plan the registers to use, the algorithm and the amount of storage needed.</p>
+</blockquote>
+</li>
+<li><p class="first">Go through every instruction and list what addressing mode is being used for each operand.</p>
+<blockquote>
+<p>Address modes:</p>
+<ul class="simple">
+<li>Movl $1 %eax: Immediate mode</li>
+<li>Movl $0 %ebx: Immediate mode</li>
+<li>movl $0, %edi: Immediate mode</li>
+<li>movl data_items(,%edi,4), %eax: indexed addressing mode</li>
+<li>movl %eax, %ebx: indirect addressing mode</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<p><strong>Use the Concepts</strong></p>
+</blockquote>
+<ul class="simple">
+<li>Modify the first program to return the value 3.</li>
+</ul>
+<pre class="code literal-block">
+# Bartlett, chapter 3
+
+.section .data
+.section .text
+
+.globl _start
+
+_start:
+    movl $1, %eax    # Nr. des Systemaufruf
+    movl $3, %ebx   # Exit Code
+    int $0x80        # Systemaufruf
+
+# vim: expandtab ts=4 sw=4
+</pre>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li>Modify the maximum program to find the minimum instead.</li>
+</ul>
+<pre class="code literal-block">
+# Finding a minimum, Bartlett PGU Chapter 3
+
+    # ----- data section -----
+    .section .data
+
+data_items:
+    .long   3, 67, 34, 12, 17, 1, 5, 7, 13, 255
+
+    # ----- text section -----
+    .section .text
+    .globl _start
+
+_start:
+    movl    $0, %edi
+    movl    data_items(, %edi, 4), %eax
+    movl    %eax, %ebx
+
+start_loop:
+    cmpl    $255, %eax
+    je      loop_exit
+    incl    %edi
+    movl    data_items(, %edi, 4), %eax
+    cmpl    %ebx, %eax
+    jge     start_loop
+
+    movl    %eax, %ebx
+    jmp     start_loop
+
+loop_exit:
+    movl    $1, %eax
+    int     $0x80
+
+
+# vim: expandtab ts=4 sw=4
+</pre>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li>Modify the maximum program to use the number 255 to end the list rather than the number 0</li>
+</ul>
+<pre class="code literal-block">
+# Finding a Maximum with 255 instead of 0, Bartlett PGU Chapter 3
+
+    # ----- data section -----
+    .section .data
+
+data_items:
+    .long   3, 67, 34, 12, 17, 255
+
+    # ----- text section -----
+    .section .text
+    .globl _start
+
+_start:
+    movl    $0, %edi
+    movl    data_items(, %edi, 4), %eax
+    movl    %eax, %ebx
+
+start_loop:
+    incl    %edi
+    movl    data_items(, %edi, 4), %eax
+    cmpl    $255, %eax
+    je      loop_exit
+    cmpl    %ebx, %eax
+    jle     start_loop
+
+    movl    %eax, %ebx
+    jmp     start_loop
+
+loop_exit:
+    movl    $1, %eax
+    int     $0x80
+
+
+# vim: expandtab ts=4 sw=4
+</pre>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li>Modify the maximum program to use an ending address rather than the number 0 to know when
+to stop.</li>
+</ul>
+<pre class="code literal-block">
+# Finding a Maximum with ending adress, Bartlett PGU Chapter 3
+
+    # ----- data section -----
+    .section .data
+
+data_items:
+    .long   3, 67, 34, 12, 17, 0
+data_items_end:
+
+    # ----- text section -----
+    .section .text
+    .globl _start
+
+_start:
+    movl    $0, %edi
+    movl    data_items(, %edi, 4), %eax
+    movl    %eax, %ebx
+
+start_loop:
+    lea     data_items(, %edi, 4), %ecx
+    cmpl    %ecx , data_items_end
+    je      loop_exit
+    incl    %edi
+    movl    data_items(, %edi, 4), %eax
+    cmpl    %ebx, %eax
+    jle     start_loop
+
+    movl    %eax, %ebx
+    jmp     start_loop
+
+loop_exit:
+    movl    $1, %eax
+    int     $0x80
+
+
+# vim: expandtab ts=4 sw=4
+</pre>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul class="simple">
+<li>Modify the maximum program to use a length count rather than the number 0 to know when to
+stop.</li>
+</ul>
+<pre class="code literal-block">
+# Finding a Maximum with length count, Bartlett PGU Chapter 3
+
+    # ----- data section -----
+        .section .data
+
+data_items:                       #These are the data items
+        .long 3,67,34,222,45,75,54,34,44,33,22,11,66,0
+
+    # ----- text section -----
+        .section .text
+        .globl _start
+_start:
+        movl    $0, %edi                    # move 0 into the index register
+        movl    data_items(,%edi,4), %eax   # load the first byte of data
+        movl    %eax, %ebx                  # since this is the first item, %eax is
+                                            # the biggest
+start_loop:                                 # start loop
+        cmpl    $6, %edx                    # check to see if we've hit the end
+        je      loop_exit
+        incl    %edi                        # load next value
+        movl    data_items(,%edi,4), %eax
+        cmpl    %ebx, %eax                  # compare values
+        jge     start_loop                  # jump to loop beginning if the new
+                                            # one isn't bigger
+        movl    %eax, %ebx                  # move the value as the largest
+        jmp     start_loop                  # jump to loop beginning
+loop_exit:
+    movl    $1, %eax                    #1 is the exit() syscall
+    int     $0x80
+
+
+# vim: expandtab ts=4 sw=4
+</pre>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<ul>
+<li><p class="first">What would the instruction movl _start, %eax do? Be specific, based on your knowledge
+of both addressing modes and the meaning of _start . How would this differ from the
+instruction movl $_start, %eax ?</p>
+<blockquote>
+<p>Movl _start, %eax would move the address of the first instruction into the eax register,                        movl $_start, %eax would move the string ‘_start’ into eax</p>
+</blockquote>
+</li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</li>
+<li><blockquote class="first">
+<p><strong>Going Further</strong></p>
+</blockquote>
+<ul>
+<li><p class="first">Modify the first program to leave off the int instruction line. Assemble, link, and execute the
+new program. What error message do you get. Why do you think this might be?</p>
+<blockquote>
+<p>Error message: Speicherzugriffsfehler, ‚echo $?‘ shows 136. Probably because the system                     recognises changes in the registers, but without a signal what to do with them, marks them                              as an error</p>
+</blockquote>
+</li>
+<li><p class="first">So far, we have discussed three approaches to finding the end of the list - using a special
+number, using the ending address, and using the length count. Which approach do you think is
+best? Why? Which approach would you use if you knew that the list was sorted? Why?</p>
+<blockquote>
+<p>Length count is probably best, since sometimes all values are needed (no value free as                              marker) and the ending address is not always known. Same reasoning if the list was sorted.</p>
+</blockquote>
+</li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</li>
+</ol>
+</div>
+</body>
+</html>

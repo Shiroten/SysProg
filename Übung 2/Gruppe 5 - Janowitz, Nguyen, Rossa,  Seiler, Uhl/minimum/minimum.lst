@@ -1,0 +1,46 @@
+GAS LISTING minimum.s 			page 1
+
+
+   1              	# Finding a Maximum, Bartlett PGU Chapter 3
+   2              	
+   3              	    # ----- data section -----
+   4              	    .section .data
+   5              	
+   6              	data_items:
+   7 0000 03000000 	    .long   3, 67, 34, 12, 17, 1, 5, 7, 13, 255
+   7      43000000 
+   7      22000000 
+   7      0C000000 
+   7      11000000 
+   8              	
+   9              	    # ----- text section -----
+  10              	    .section .text
+  11              	    .globl _start
+  12              	
+  13              	_start:
+  14 0000 BF000000 	    movl    $0, %edi
+  14      00
+  15 0005 678B04BD 	    movl    data_items(, %edi, 4), %eax
+  15      00000000 
+  16 000d 89C3     	    movl    %eax, %ebx
+  17              	
+  18              	start_loop:
+  19 000f 3DFF0000 	    cmpl    $255, %eax
+  19      00
+  20 0014 7412     	    je      loop_exit
+  21 0016 FFC7     	    incl    %edi
+  22 0018 678B04BD 	    movl    data_items(, %edi, 4), %eax
+  22      00000000 
+  23 0020 39D8     	    cmpl    %ebx, %eax
+  24 0022 7DEB     	    jge     start_loop
+  25              	
+  26 0024 89C3     	    movl    %eax, %ebx
+  27 0026 EBE7     	    jmp     start_loop
+  28              	
+  29              	loop_exit:
+  30 0028 B8010000 	    movl    $1, %eax
+  30      00
+  31 002d CD80     	    int     $0x80
+  32              	
+  33              	
+  34              	# vim: expandtab ts=4 sw=4
