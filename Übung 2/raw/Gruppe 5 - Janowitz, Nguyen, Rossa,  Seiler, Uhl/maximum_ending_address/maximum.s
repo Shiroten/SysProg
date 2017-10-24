@@ -4,7 +4,7 @@
     .section .data
 
 data_items:
-    .long   3, 67, 34, 12, 17, 0
+    .long   3, 67, 34, 12, 17, 0, 111, 156
 data_items_end:
 
     # ----- text section -----
@@ -19,8 +19,8 @@ _start:
 
 start_loop:
     lea     data_items(, %edi, 4), %ecx
-    cmpl    %ecx , data_items_end
-    jge     loop_exit
+    cmpl    %ecx , %edx
+    jle     loop_exit
     incl    %edi
     movl    data_items(, %edi, 4), %eax
     cmpl    %ebx, %eax

@@ -121,7 +121,6 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 	* Modify the maximum program to use an ending address rather than the number 0 to know when
 	  to stop.
 
-**Todo**
 	.. include:: maximum_ending_address/maximum.s
 		:code: 
 

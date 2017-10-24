@@ -613,18 +613,14 @@ loop_exit:
 <li>Modify the maximum program to use an ending address rather than the number 0 to know when
 to stop.</li>
 </ul>
-</li>
-</ol>
-<dl class="docutils">
-<dt><strong>Todo</strong></dt>
-<dd><pre class="code first literal-block">
+<pre class="code literal-block">
 # Finding a Maximum with ending adress, Bartlett PGU Chapter 3
 
     # ----- data section -----
     .section .data
 
 data_items:
-    .long   3, 67, 34, 12, 17, 0
+    .long   3, 67, 34, 12, 17, 0, 111, 156
 data_items_end:
 
     # ----- text section -----
@@ -634,12 +630,13 @@ data_items_end:
 _start:
     movl    $0, %edi
     movl    data_items(, %edi, 4), %eax
+    lea     data_items_end, %edx
     movl    %eax, %ebx
 
 start_loop:
     lea     data_items(, %edi, 4), %ecx
-    cmpl    %ecx , data_items_end
-    je      loop_exit
+    cmpl    %ecx , %edx
+    jle     loop_exit
     incl    %edi
     movl    data_items(, %edi, 4), %eax
     cmpl    %ebx, %eax
@@ -708,12 +705,10 @@ instruction movl $_start, %eax ?</p>
 </blockquote>
 </li>
 </ul>
-<div class="last line-block">
+<div class="line-block">
 <div class="line"><br /></div>
 </div>
-</dd>
-</dl>
-<ol class="arabic" start="3">
+</li>
 <li><blockquote class="first">
 <p><strong>Going Further</strong></p>
 </blockquote>

@@ -7,7 +7,7 @@ GAS LISTING maximum.s 			page 1
    4              	    .section .data
    5              	
    6              	data_items:
-   7 0000 03000000 	    .long   3, 67, 34, 12, 17, 0
+   7 0000 03000000 	    .long   3, 67, 34, 12, 17, 0, 111, 156
    7      43000000 
    7      22000000 
    7      0C000000 
@@ -23,29 +23,28 @@ GAS LISTING maximum.s 			page 1
   15      00
   16 0005 8B04BD00 	    movl    data_items(, %edi, 4), %eax
   16      000000
-  17 000c 8D151800 	    lea     data_items_end, %edx
+  17 000c 8D152000 	    lea     data_items_end, %edx
   17      0000
   18 0012 89C3     	    movl    %eax, %ebx
   19              	
   20              	start_loop:
   21 0014 8D0CBD00 	    lea     data_items(, %edi, 4), %ecx
   21      000000
-  22 001b 390D1800 	    cmpl    %ecx , data_items_end
-  22      0000
-  23 0021 7D10     	    jge     loop_exit
-  24 0023 47       	    incl    %edi
-  25 0024 8B04BD00 	    movl    data_items(, %edi, 4), %eax
+  22 001b 39CA     	    cmpl    %ecx , %edx
+  23 001d 7E10     	    jle     loop_exit
+  24 001f 47       	    incl    %edi
+  25 0020 8B04BD00 	    movl    data_items(, %edi, 4), %eax
   25      000000
-  26 002b 39D8     	    cmpl    %ebx, %eax
-  27 002d 7EE5     	    jle     start_loop
+  26 0027 39D8     	    cmpl    %ebx, %eax
+  27 0029 7EE9     	    jle     start_loop
   28              	
-  29 002f 89C3     	    movl    %eax, %ebx
-  30 0031 EBE1     	    jmp     start_loop
+  29 002b 89C3     	    movl    %eax, %ebx
+  30 002d EBE5     	    jmp     start_loop
   31              	
   32              	loop_exit:
-  33 0033 B8010000 	    movl    $1, %eax
+  33 002f B8010000 	    movl    $1, %eax
   33      00
-  34 0038 CD80     	    int     $0x80
+  34 0034 CD80     	    int     $0x80
   35              	
   36              	
   37              	# vim: expandtab ts=4 sw=4
