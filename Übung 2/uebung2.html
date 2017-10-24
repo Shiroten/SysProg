@@ -1,0 +1,426 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0069)http://hhoegl.informatik.hs-augsburg.de/sysprog/Uebungen/uebung2.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/">
+<title></title>
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id: html4css1.css 7614 2013-02-21 15:55:51Z milde $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+object[type="image/svg+xml"], object[type="application/x-shockwave-flash"] {
+  overflow: hidden;
+}
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title, .code .error {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: inherit }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block, pre.math, pre.code {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+pre.code .ln { color: grey; } /* line numbers */
+pre.code, code { background-color: #eeeeee }
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+/* "booktabs" style (no vertical lines) */
+table.docutils.booktabs {
+  border: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.docutils.booktabs * {
+  border: 0px;
+}
+table.docutils.booktabs th {
+  border-bottom: thin solid;
+  text-align: left;
+}
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+<style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
+.en-markup-crop-options {
+    top: 18px !important;
+    left: 50% !important;
+    margin-left: -100px !important;
+    width: 200px !important;
+    border: 2px rgba(255,255,255,.38) solid !important;
+    border-radius: 4px !important;
+}
+
+.en-markup-crop-options div div:first-of-type {
+    margin-left: 0px !important;
+}
+</style></head>
+<body>
+<div class="document">
+
+
+<div class="line-block">
+<div class="line">Hochschule Augsburg</div>
+<div class="line">Prof. Dr. Hubert Högl</div>
+<div class="line">E-mail: <tt class="docutils literal"><span class="pre">Hubert.Hoegl@hs-augsburg.de</span></tt></div>
+<div class="line">WWW: <a class="reference external" href="http://hhoegl.informatik.hs-augsburg.de/hhwiki/SysProg">http://hhoegl.informatik.hs-augsburg.de/hhwiki/SysProg</a></div>
+</div>
+<div class="section" id="ubungen-in-systemnaher-programmierung">
+<h1>Übungen in Systemnaher Programmierung</h1>
+<div class="section" id="ubungsblatt-2">
+<h2>Übungsblatt 2</h2>
+<div class="section" id="aufgabe">
+<h3>1. Aufgabe</h3>
+<p>Holen Sie sich das erste im Buch von Bartlett erwähnte Programm:</p>
+<pre class="literal-block">$GIT/pgu/prog-3-1
+</pre>
+<p>Wechseln Sie in diesen Ordner und "spielen" Sie mit dem Programm. Das Programm
+wird im Bartlett in Kapitel 3 erläutert.</p>
+<blockquote>
+<ul class="simple">
+<li>Kompilieren und starten Sie das Programm (ohne noch zu wissen, wie es
+genau funktioniert).</li>
+<li>Sehen Sie sich den Rückgabewert an. Das Shell-Kommando lautet
+<tt class="docutils literal">echo $?</tt>.</li>
+<li>Verändern Sie den Rückgabewert im Programm und starten Sie es
+erneut. Ist der Rückgabewert nun anders?</li>
+<li>Fügen Sie ein neues Target zu Ihrem Makefile das die Anzahl der
+Zeilen in <tt class="docutils literal">main.s</tt> zählt. Verwenden Sie dazu das Werkzeug
+<tt class="docutils literal">wc</tt> (word count) so: <tt class="docutils literal">wc <span class="pre">-l</span> main.s</tt>. Was <tt class="docutils literal"><span class="pre">-l</span></tt> bedeutet sagt
+Ihnen die Manual-Seite. Was muss man am Anfang der Zeile eines
+Makefile-Targets beachten?</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="id1">
+<h3>2. Aufgabe</h3>
+<p>Untersuchen Sie die in Kapitel 3 beschriebene Maximum-Suche Zeile für
+Zeile, so wie im Buch beschrieben. Sie finden das Programm im Repository unter</p>
+<blockquote>
+$GIT/pgu/prog-3-2</blockquote>
+<p>Da Sie schon ein paar gdb Kommandos kennen, sollten Sie gdb zum Studieren des
+Programmablaufes verwenden.  In <a class="reference external" href="http://hhoegl.informatik.hs-augsburg.de/sysprog/gdb/gdb.html">gdb.html</a> (Quelle: <a class="reference external" href="http://hhoegl.informatik.hs-augsburg.de/sysprog/gdb/gdb.rst">gdb.rst</a>) finden Sie eine Zusammenstellung der wichtigsten GDB
+Kommandos für Anfänger.</p>
+<p>Beantworten Sie die Fragen am Ende von Kapitel 3 im Buch ("Know the Concents", "Use the Concepts", "Going Further").</p>
+</div>
+<div class="section" id="id2">
+<h3>3. Aufgabe</h3>
+<p>Zum Experimentieren mit den Adressierungsarten finden sie im Verzeichnis
+<a class="reference external" href="http://hhoegl.informatik.hs-augsburg.de/sysprog/Uebungen/01-addr-modes/">01-addr-modes/</a> ein kleines Programm. Verwenden Sie auch
+hier den gdb um das Programm zu analysieren.</p>
+<hr class="docutils">
+<p>Ein Tipp für die, die jetzt schon mehr über GDB wissen wollen: Von Norman
+Matloff gibt es das Tutorial "Guide to Faster, Less Frustrating Debugging",
+siehe</p>
+<blockquote>
+<a class="reference external" href="http://heather.cs.ucdavis.edu/~matloff/UnixAndC/CLanguage/Debug.html">http://heather.cs.ucdavis.edu/~matloff/UnixAndC/CLanguage/Debug.html</a></blockquote>
+<p>Später wurde daraus ein Buch: Norman Matloff, Peter Jay Salzman,
+<em>The Art of Debugging with GDB and DDD</em>, No Starch Press 2008. Man kann
+das Buch an der Hochschule online auf <a class="reference external" href="http://proquest.safaribooksonline.com/book/software-engineering-and-development/ide/9781593271749">Safari</a> lesen.</p>
+<p>Hier ist noch ein anderes Tutorial:</p>
+<blockquote>
+<a class="reference external" href="http://www.unknownroad.com/rtfm/gdbtut/gdbtoc.html">http://www.unknownroad.com/rtfm/gdbtut/gdbtoc.html</a></blockquote>
+<!-- Local Variables: -->
+<!-- compile-command: "rst2html - -language=de uebung1.rst uebung1.html" -->
+<!-- End: -->
+</div>
+</div>
+</div>
+</div>
+
+
+</body></html>
