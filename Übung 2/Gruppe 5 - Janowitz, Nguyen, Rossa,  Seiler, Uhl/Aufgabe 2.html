@@ -375,41 +375,40 @@ ul.auto-toc {
 </blockquote>
 </li>
 <li><p class="first">Fügen Sie ein neues Target zu Ihrem Makefile das die Anzahl der Zeilen in main.s zählt. Verwenden       Sie dazu das Werkzeug wc (word count) so: wc -l main.s.</p>
-</li>
-</ul>
-</li>
-</ol>
-<dl class="docutils">
-<dt><strong>Todo</strong></dt>
-<dd><blockquote class="first">
+<blockquote>
 <pre class="code literal-block">
-# Bartlett, chapter 3
 
-.section .data
-.section .text
+all: main
 
-.globl _start
 
-_start:
-    movl $1, %eax    # Nr. des Systemaufruf
-    movl $3, %ebx   # Exit Code
-    int $0x80        # Systemaufruf
+main.o: main.s
 
-# vim: expandtab ts=4 sw=4
+        as -al=main.lst -g -o main.o main.s
+
+main: main.o
+
+        ld -o main main.o
+# Mit linker map:
+#       ld -M -Map=main.map -o main main.o
+
+clean:
+        rm -f main.o main  *.lst *~
+
+count: main.s
+        wc -l main.s
 </pre>
 </blockquote>
-<ul class="last simple">
-<li>Was muss man am Anfang der Zeile eines Makefile-Targets beachten?</li>
-</ul>
-</dd>
-</dl>
-<p><strong>Todo</strong></p>
+</li>
+<li><p class="first">Was muss man am Anfang der Zeile eines Makefile-Targets beachten?</p>
 <blockquote>
+<p>Der Indent muss über Tabs gehändelt werden und nicht über Leerzeichen</p>
+</blockquote>
+</li>
+</ul>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-</blockquote>
-<ol class="arabic" start="2">
+</li>
 <li><blockquote class="first">
 <p><strong>Know the Concepts</strong></p>
 </blockquote>

@@ -1,8 +1,6 @@
 
 all: main 
 
-count:main.s
-	wc -l main.s
 
 main.o: main.s
 	
@@ -16,3 +14,6 @@ main: main.o
 
 clean:
 	rm -f main.o main  *.lst *~
+
+count: main.s
+	wc -l main.s

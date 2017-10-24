@@ -12,13 +12,13 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 
 	* Fügen Sie ein neues Target zu Ihrem Makefile das die Anzahl der Zeilen in main.s zählt. Verwenden 	  Sie dazu das Werkzeug wc (word count) so: wc -l main.s. 
 
-**Todo**
-		.. include:: first_programm/main.s
+		.. include:: first_programm/Makefile
 			:code:
 
 	* Was muss man am Anfang der Zeile eines Makefile-Targets beachten?
 
-**Todo**
+		Der Indent muss über Tabs gehändelt werden und nicht über Leerzeichen
+
 
 	|
 
