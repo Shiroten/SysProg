@@ -1,7 +1,7 @@
 GAS LISTING maximum.s 			page 1
 
 
-   1              	# Finding a Maximum, Bartlett PGU Chapter 3
+   1              	# Finding a Maximum with ending adress, Bartlett PGU Chapter 3
    2              	
    3              	    # ----- data section -----
    4              	    .section .data
@@ -23,27 +23,29 @@ GAS LISTING maximum.s 			page 1
   15      00
   16 0005 8B04BD00 	    movl    data_items(, %edi, 4), %eax
   16      000000
-  17 000c 89C3     	    movl    %eax, %ebx
-  18              	
-  19              	start_loop:
-  20 000e 8D0CBD00 	    lea     data_items(, %edi, 4), %ecx
-  20      000000
-  21 0015 390D1800 	    cmpl    %ecx , data_items_end
-  21      0000
-  22 001b 7410     	    je      loop_exit
-  23 001d 47       	    incl    %edi
-  24 001e 8B04BD00 	    movl    data_items(, %edi, 4), %eax
-  24      000000
-  25 0025 39D8     	    cmpl    %ebx, %eax
-  26 0027 7EE5     	    jle     start_loop
-  27              	
-  28 0029 89C3     	    movl    %eax, %ebx
-  29 002b EBE1     	    jmp     start_loop
-  30              	
-  31              	loop_exit:
-  32 002d B8010000 	    movl    $1, %eax
-  32      00
-  33 0032 CD80     	    int     $0x80
-  34              	
+  17 000c 8D151800 	    lea     data_items_end, %edx
+  17      0000
+  18 0012 89C3     	    movl    %eax, %ebx
+  19              	
+  20              	start_loop:
+  21 0014 8D0CBD00 	    lea     data_items(, %edi, 4), %ecx
+  21      000000
+  22 001b 390D1800 	    cmpl    %ecx , data_items_end
+  22      0000
+  23 0021 7D10     	    jge     loop_exit
+  24 0023 47       	    incl    %edi
+  25 0024 8B04BD00 	    movl    data_items(, %edi, 4), %eax
+  25      000000
+  26 002b 39D8     	    cmpl    %ebx, %eax
+  27 002d 7EE5     	    jle     start_loop
+  28              	
+  29 002f 89C3     	    movl    %eax, %ebx
+  30 0031 EBE1     	    jmp     start_loop
+  31              	
+  32              	loop_exit:
+  33 0033 B8010000 	    movl    $1, %eax
+  33      00
+  34 0038 CD80     	    int     $0x80
   35              	
-  36              	# vim: expandtab ts=4 sw=4
+  36              	
+  37              	# vim: expandtab ts=4 sw=4

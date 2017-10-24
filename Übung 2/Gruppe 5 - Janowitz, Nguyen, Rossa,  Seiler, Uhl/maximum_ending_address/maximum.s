@@ -14,12 +14,13 @@ data_items_end:
 _start:
     movl    $0, %edi
     movl    data_items(, %edi, 4), %eax
+    lea     data_items_end, %edx
     movl    %eax, %ebx
 
 start_loop:
     lea     data_items(, %edi, 4), %ecx
     cmpl    %ecx , data_items_end
-    je      loop_exit
+    jge     loop_exit
     incl    %edi
     movl    data_items(, %edi, 4), %eax
     cmpl    %ebx, %eax
