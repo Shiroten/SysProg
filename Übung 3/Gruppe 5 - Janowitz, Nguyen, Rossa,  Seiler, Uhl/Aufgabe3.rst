@@ -8,8 +8,61 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 1. Diverses	
 -------------
 	
-	1.1 
+	1.1 Zeichnen Sie alle Register der x86 CPU in ein Diagramm. Wie ist der Name für die 8-, 16- und 32-Bit Register?
+		
+	|
+
+		+----------+--------------------------+----------------------+-------------------+-------------------+
+		| Register | General                                                                                 |
+		+----------+--------------------------+----------------------+-------------------+-------------------+
+		|          | Accumulator              | Counter              | Data              | Base              |
+		+----------+--------------------------+----------------------+-------------------+-------------------+
+		| 32       | EAX                      | EBX                  | ECX               | EDX               |
+		+----------+----------------+---------+------------+---------+---------+---------+---------+---------+
+		| 16       |                | AX      |            | BX      |         | CX      |         | DX      |
+		+----------+----------------+----+----+------------+----+----+---------+----+----+---------+----+----+
+		| 8        |                | AH | AL |            | BH | BL |         | CH | CL |         | DH | DL |
+		+----------+----------------+----+----+------------+----+----+---------+----+----+---------+----+----+		
+
 		|
+
+		+----------+-----------------------+--------------------------------------------------------------+-------------------+
+		| Register | Segment               | Indexes                                                      |                   |
+		+----------+-----------------------+----------------------+-------------------+-------------------+-------------------+
+		|          |                       | Stack Pointer        | Stack Base Pointer| Source            |Destination        |
+		+----------+-----------------------+----------------------+-------------------+-------------------+-------------------+
+		| 32       |                       | RSP                  | RBP               | RSI               | RDI               |
+		+----------+---+---+---+---+---+---+-----------+----------+---------+---------+---------+---------+---------+---------+
+		| 16       | C | D | E | F | G | S |           | ESP      |         | EBP     |         | ESI     |         | EDI     |
+		|          | S | S | S | S | S | S |           |          |         |         |         |         |         |         |
+		+----------+---+---+---+---+---+---+-----------+----------+---------+---------+---------+---------+---------+---------+
+		| 8        |                       |           | SP       |         | BP      |         | SI      |         | DI      |
+		+----------+-----------------------+-----------+----------+---------+---------+---------+---------+---------+---------+	
+
+	|
+
+		| EFLAGS:
+		| Bit   Label    Desciption
+		| ---------------------------
+		| 0      CF      Carry flag
+		| 2      PF      Parity flag
+		| 4      AF      Auxiliary carry flag
+		| 6      ZF      Zero flag
+		| 7      SF      Sign flag
+		| 8      TF      Trap flag
+		| 9      IF      Interrupt enable flag
+		| 10     DF      Direction flag
+		| 11     OF      Overflow flag
+		| 12-13  IOPL    I/O Priviledge level
+		| 14     NT      Nested task flag
+		| 16     RF      Resume flag
+		| 17     VM      Virtual 8086 mode flag
+		| 18     AC      Alignment check flag (486+)
+		| 19     VIF     Virutal interrupt flag
+		| 20     VIP     Virtual interrupt pending flag
+		| 21     ID      ID flag
+
+	|
 
 	1.2 Was bedeuten die folgenden Pseudo-Anweisungen?
 	
@@ -30,19 +83,19 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 
 		- .byte
 
-		 Ein Byte, 0-255
+		 Benutzt eine "storage location" (Ein Byte),Werte zwischen 0-255
 
 		- .hword
 
-		 Insert the 16-bit half-word
+		 Fügt Daten als halbes Wort (jeweils 2 Bytes) in zwei "storage locations"
 
 		- .long
 
-		 4 Byte, 0-4294967295
+		 Fügt Daten als ganzes Wort (4 Byte) in vier "storage locations", Werte zwischen 0-4294967295
 
 		- .int
 
-		 4 Byte, 0-65535 
+		 Fügt Daten der größe 2 Byte (zwei "storage locations), Wertebereich: 0-65535 
 
 		- .ascii
 
@@ -84,11 +137,19 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 	1.6
 
 		* Todo
+
+		| .. include:: pfad
+		|	:code:
+
 	|	
 
 	1.7
 
 		* Todo
+
+		| .. include:: pfad
+		|	:code:
+
 	|
 
 	1.8 Entfernen Sie das _start Label bei einem Programm und untersuchen Sie, was dann beim Assemblieren passiert. Verändern Sie in 		    einem zweiten Schritt den Namen dieses Labels.
@@ -100,14 +161,8 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 
 		  Linker kann den einstiegs Punkt vom Assembler nicht finden und weiß so nicht wo das Programm anfängt.
 		  Dies passiert wenn das Label _start vergessen wird oder falsch benannt ist.
-
-
-
-
-	* 
 	
-	#.. include:: pfad
-	#	:code:
+
 
 
 

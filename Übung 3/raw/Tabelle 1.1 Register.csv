@@ -1,0 +1,5 @@
+Register,General,,,,,,,,,,,,,,,
+,Accumulator,,,,Counter,,,,Data,,,,Base,,,
+32,EAX,,,,EBX,,,,ECX,,,,EDX,,,
+16,,,AX,,,,BX,,,,CX,,,,DX,
+8,,,AH,AL,,,BH,BL,,,CH,CL,,,DH,DL

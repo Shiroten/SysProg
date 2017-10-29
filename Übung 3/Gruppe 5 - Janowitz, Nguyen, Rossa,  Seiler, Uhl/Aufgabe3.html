@@ -367,36 +367,309 @@ ul.auto-toc {
 <dt>Von:    Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa</dt>
 <dd>Roman Seiler, Alexander Uhl</dd>
 </dl>
-<ol class="arabic">
-<li><ul class="first">
-<li><div class="first line-block">
-<div class="line"><br /></div>
-</div>
-</li>
-</ul>
-</li>
-<li><blockquote class="first">
-<p><strong>Know the Concepts</strong></p>
+<div class="section" id="diverses">
+<h1>1. Diverses</h1>
+<blockquote>
+<p>1.1 Zeichnen Sie alle Register der x86 CPU in ein Diagramm. Wie ist der Name für die 8-, 16- und 32-Bit Register?</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><strong>Use the Concepts</strong></p>
-</blockquote>
-<ul class="simple">
-<li></li>
-</ul>
-<p>#.. include:: pfad
-#       :code:</p>
-</li>
-<li><ul class="first">
-<li><div class="first line-block">
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="18%" />
+<col width="5%" />
+<col width="5%" />
+<col width="14%" />
+<col width="5%" />
+<col width="5%" />
+<col width="10%" />
+<col width="5%" />
+<col width="5%" />
+<col width="10%" />
+<col width="5%" />
+<col width="5%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Register</td>
+<td colspan="12">General</td>
+</tr>
+<tr><td>&nbsp;</td>
+<td colspan="3">Accumulator</td>
+<td colspan="3">Counter</td>
+<td colspan="3">Data</td>
+<td colspan="3">Base</td>
+</tr>
+<tr><td>32</td>
+<td colspan="3">EAX</td>
+<td colspan="3">EBX</td>
+<td colspan="3">ECX</td>
+<td colspan="3">EDX</td>
+</tr>
+<tr><td>16</td>
+<td>&nbsp;</td>
+<td colspan="2">AX</td>
+<td>&nbsp;</td>
+<td colspan="2">BX</td>
+<td>&nbsp;</td>
+<td colspan="2">CX</td>
+<td>&nbsp;</td>
+<td colspan="2">DX</td>
+</tr>
+<tr><td>8</td>
+<td>&nbsp;</td>
+<td>AH</td>
+<td>AL</td>
+<td>&nbsp;</td>
+<td>BH</td>
+<td>BL</td>
+<td>&nbsp;</td>
+<td>CH</td>
+<td>CL</td>
+<td>&nbsp;</td>
+<td>DH</td>
+<td>DL</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><strong>Going Further</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="11%" />
+<col width="10%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Register</td>
+<td colspan="6">Segment</td>
+<td colspan="6">Indexes</td>
+<td colspan="2">&nbsp;</td>
+</tr>
+<tr><td>&nbsp;</td>
+<td colspan="6">&nbsp;</td>
+<td colspan="2">Stack Pointer</td>
+<td colspan="2">Stack Base Pointer</td>
+<td colspan="2">Source</td>
+<td colspan="2">Destination</td>
+</tr>
+<tr><td>32</td>
+<td colspan="6">&nbsp;</td>
+<td colspan="2">RSP</td>
+<td colspan="2">RBP</td>
+<td colspan="2">RSI</td>
+<td colspan="2">RDI</td>
+</tr>
+<tr><td>16</td>
+<td>C
+S</td>
+<td>D
+S</td>
+<td>E
+S</td>
+<td>F
+S</td>
+<td>G
+S</td>
+<td>S
+S</td>
+<td>&nbsp;</td>
+<td>ESP</td>
+<td>&nbsp;</td>
+<td>EBP</td>
+<td>&nbsp;</td>
+<td>ESI</td>
+<td>&nbsp;</td>
+<td>EDI</td>
+</tr>
+<tr><td>8</td>
+<td colspan="6">&nbsp;</td>
+<td>&nbsp;</td>
+<td>SP</td>
+<td>&nbsp;</td>
+<td>BP</td>
+<td>&nbsp;</td>
+<td>SI</td>
+<td>&nbsp;</td>
+<td>DI</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<div class="line-block">
+<div class="line">EFLAGS:</div>
+<div class="line">Bit   Label    Desciption</div>
+<div class="line">---------------------------</div>
+<div class="line">0      CF      Carry flag</div>
+<div class="line">2      PF      Parity flag</div>
+<div class="line">4      AF      Auxiliary carry flag</div>
+<div class="line">6      ZF      Zero flag</div>
+<div class="line">7      SF      Sign flag</div>
+<div class="line">8      TF      Trap flag</div>
+<div class="line">9      IF      Interrupt enable flag</div>
+<div class="line">10     DF      Direction flag</div>
+<div class="line">11     OF      Overflow flag</div>
+<div class="line">12-13  IOPL    I/O Priviledge level</div>
+<div class="line">14     NT      Nested task flag</div>
+<div class="line">16     RF      Resume flag</div>
+<div class="line">17     VM      Virtual 8086 mode flag</div>
+<div class="line">18     AC      Alignment check flag (486+)</div>
+<div class="line">19     VIF     Virutal interrupt flag</div>
+<div class="line">20     VIP     Virtual interrupt pending flag</div>
+<div class="line">21     ID      ID flag</div>
+</div>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>1.2 Was bedeuten die folgenden Pseudo-Anweisungen?</p>
+<blockquote>
+<ul class="simple">
+<li>.data</li>
+</ul>
+<blockquote>
+Data Section:
+Fest kodierte Werte</blockquote>
+<ul class="simple">
+<li>.bss</li>
+</ul>
+<blockquote>
+Buffer Section:
+Platz für temporäre Daten, zB. Datei einlesen</blockquote>
+<ul class="simple">
+<li>.text</li>
+</ul>
+<blockquote>
+Text Section:
+Enthält Programm Code</blockquote>
+<ul class="simple">
+<li>.byte</li>
+</ul>
+<blockquote>
+Benutzt eine &quot;storage location&quot; (Ein Byte),Werte zwischen 0-255</blockquote>
+<ul class="simple">
+<li>.hword</li>
+</ul>
+<blockquote>
+Fügt Daten als halbes Wort (jeweils 2 Bytes) in zwei &quot;storage locations&quot;</blockquote>
+<ul class="simple">
+<li>.long</li>
+</ul>
+<blockquote>
+Fügt Daten als ganzes Wort (4 Byte) in vier &quot;storage locations&quot;, Werte zwischen 0-4294967295</blockquote>
+<ul class="simple">
+<li>.int</li>
+</ul>
+<blockquote>
+Fügt Daten der größe 2 Byte (zwei &quot;storage locations), Wertebereich: 0-65535</blockquote>
+<ul class="simple">
+<li>.ascii</li>
+</ul>
+<blockquote>
+Speichern von Text, jeder Charakter wird mit seinem Char-Code gespeichert.
+Nullbyte muss angegeben werden um Ende von einem String zu signalisieren.
+Mehere String, durch Komma getrennt, werden direkt aneinander gespeichert.</blockquote>
+<ul class="simple">
+<li>.asciz</li>
+</ul>
+<blockquote>
+Wie .ascii, aber Strings bekommen das Nullbyte automatisch angehängt, bevor
+sie gespeichert werden.</blockquote>
+<ul class="simple">
+<li>.lcomm</li>
+</ul>
+<blockquote>
+Erstellt einen Buffer mit einer festen Größe</blockquote>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>1.3 Was bedeutet die folgende Zeile?</p>
+<blockquote>
+<ul>
+<li><p class="first">.global _start, demofunc ?</p>
+<p>Export vom Symbolen, werden vom Linker nicht &quot;weggeworfen&quot;.
+Erlaubt Zugriff auf Code Teile per Name statt Adresse.</p>
 </li>
 </ul>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>1.4 Übersetzen Sie die folgende Anweisung in Maschinencode:</p>
+<blockquote>
+<ul>
+<li><p class="first">Maschinencode für 'str1: .asciz &quot;SYSPROG&quot;</p>
+<div class="line-block">
+<div class="line">53 59 53 50 &gt;&gt; SYSP</div>
+<div class="line">52 4F 47 00 &gt;&gt; ROG_ (Nullbyte am Ende vom String)</div>
+</div>
 </li>
-</ol>
+</ul>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>1.6</p>
+<blockquote>
+<ul class="simple">
+<li>Todo</li>
+</ul>
+<div class="line-block">
+<div class="line">.. include:: pfad</div>
+<div class="line-block">
+<div class="line">:code:</div>
+</div>
+</div>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>1.7</p>
+<blockquote>
+<ul class="simple">
+<li>Todo</li>
+</ul>
+<div class="line-block">
+<div class="line">.. include:: pfad</div>
+<div class="line-block">
+<div class="line">:code:</div>
+</div>
+</div>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>1.8 Entfernen Sie das _start Label bei einem Programm und untersuchen Sie, was dann beim Assemblieren passiert. Verändern Sie in                    einem zweiten Schritt den Namen dieses Labels.</p>
+<blockquote>
+<ul>
+<li><p class="first">kein _start Label &amp; umbenanntes Label:</p>
+<p>ld: warning: cannot find entry symbol _start; defaulting to 00000000004000b0</p>
+<p>Linker kann den einstiegs Punkt vom Assembler nicht finden und weiß so nicht wo das Programm anfängt.
+Dies passiert wenn das Label _start vergessen wird oder falsch benannt ist.</p>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+</div>
 </div>
 </body>
 </html>
