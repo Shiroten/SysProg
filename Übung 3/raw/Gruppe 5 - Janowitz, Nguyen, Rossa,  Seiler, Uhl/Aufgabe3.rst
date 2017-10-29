@@ -134,17 +134,28 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 
 	|
 
-	**-----------Todo-----------**
 
 	**1.6** Adressierungsarten üben:
 
-		* Denken Sie die Beispiele in 01-addr-modes/ durch so dass Sie wissen, was bei jedem Befehl passiert.
-
-		  **-----------Todo-----------**
-
 		* Wie lang sind die einzelnen Befehle?
-		
-		  **-----------Todo-----------**
+
+			.. code::
+			
+				mov   $-150, %ax: 	4 Bytes 
+				mov   $0x2f, %ecx: 	5 Bytes
+				mov   $1024*16, %eax:	5 Bytes
+				movl  $43, bvar: 	10 Bytes
+				movl  bvar, %eax: 	5 Bytes 
+				movl  (dvar), %eax: 	5 Bytes 
+				lea   dvar, %ecx: 	6 Bytes 
+				movl  (%ecx), %eax: 	2 Bytes
+				movl  $1, %ecx: 	5 Bytes 
+				movl  $0x12345678, dvar( , %ecx, 4): 		11 Bytes
+				movl  $0x12345678, dvar(%ebx, %ecx, 4): 	11 Bytes 
+				leal  bvar, %eax: 	6 Bytes
+				movl  8(%eax), %ebx: 	3 Bytes 
+				movl  $1, %eax: 	5 Bytes
+				int   $0x80: 		2 Bytes
 
 		* Ist "movl %eax, %ebx" ein gültiger Befehl?
 
@@ -152,7 +163,7 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 
 		* Ist "movl (%eax), (%ebx)" ein gültiger Befehl?
 
-		  Ebenfall gültig. Diesmal wird was an der Adresse von %eax steht an der effektiven Stelle von %ebx geschrieben.
+		  "movl (%eax), (%ebx)" ist nicht gültig da so viele adressierungs Operationen nicht in einen Befehl benutzt werden können
 
 	|
 		
@@ -174,7 +185,14 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 
 		  Linker kann den einstiegs Punkt vom Assembler nicht finden und weiß so nicht wo das Programm anfängt.
 		  Dies passiert wenn das Label _start vergessen wird oder falsch benannt ist.
-	
+
+	|
+
+
+2. Maximum Suche 	
+----------------
+
+	* Siehe Abgabe 2
 
 
 

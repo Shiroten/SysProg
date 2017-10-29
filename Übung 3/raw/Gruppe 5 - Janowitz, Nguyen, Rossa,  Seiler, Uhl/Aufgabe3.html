@@ -574,12 +574,12 @@ Fügt Daten als halbes Wort (jeweils 2 Bytes) in zwei &quot;storage locations&qu
 <li>.long</li>
 </ul>
 <blockquote>
-Fügt Daten als ganzes Wort (4 Byte) in vier &quot;storage locations&quot;, Werte zwischen 0-4294967295</blockquote>
+Fügt Daten als ganzes Wort (4 Byte) in vier &quot;storage locations&quot;, Werte zwischen 0-4.294.967.295</blockquote>
 <ul class="simple">
 <li>.int</li>
 </ul>
 <blockquote>
-Fügt Daten der größe 2 Byte (zwei &quot;storage locations), Wertebereich: 0-65535</blockquote>
+Fügt Daten der größe 2 Byte (zwei &quot;storage locations), Wertebereich: 0-65.535</blockquote>
 <ul class="simple">
 <li>.ascii</li>
 </ul>
@@ -628,21 +628,35 @@ Erlaubt Zugriff auf Code Teile per Name statt Adresse.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><strong>-----------Todo-----------</strong></p>
 <p><strong>1.6</strong> Adressierungsarten üben:</p>
 <blockquote>
 <ul>
-<li><p class="first">Denken Sie die Beispiele in 01-addr-modes/ durch so dass Sie wissen, was bei jedem Befehl passiert.</p>
-<p><strong>-----------Todo-----------</strong></p>
-</li>
 <li><p class="first">Wie lang sind die einzelnen Befehle?</p>
-<p><strong>-----------Todo-----------</strong></p>
+<blockquote>
+<pre class="code literal-block">
+mov   $-150, %ax:       4 Bytes
+mov   $0x2f, %ecx:      5 Bytes
+mov   $1024*16, %eax:   5 Bytes
+movl  $43, bvar:        10 Bytes
+movl  bvar, %eax:       5 Bytes
+movl  (dvar), %eax:     5 Bytes
+lea   dvar, %ecx:       6 Bytes
+movl  (%ecx), %eax:     2 Bytes
+movl  $1, %ecx:         5 Bytes
+movl  $0x12345678, dvar( , %ecx, 4):            11 Bytes
+movl  $0x12345678, dvar(%ebx, %ecx, 4):         11 Bytes
+leal  bvar, %eax:       6 Bytes
+movl  8(%eax), %ebx:    3 Bytes
+movl  $1, %eax:         5 Bytes
+int   $0x80:            2 Bytes
+</pre>
+</blockquote>
 </li>
 <li><p class="first">Ist &quot;movl %eax, %ebx&quot; ein gültiger Befehl?</p>
 <p>&quot;movl %eax, %ebx&quot; ist ein gültiger Befehel. Es wird der Inhalt von Register %eax nach %ebx geschrieben.</p>
 </li>
 <li><p class="first">Ist &quot;movl (%eax), (%ebx)&quot; ein gültiger Befehl?</p>
-<p>Ebenfall gültig. Diesmal wird was an der Adresse von %eax steht an der effektiven Stelle von %ebx geschrieben.</p>
+<p>&quot;movl (%eax), (%ebx)&quot; ist nicht gültig da so viele adressierungs Operationen nicht in einen Befehl benutzt werden können</p>
 </li>
 </ul>
 </blockquote>
@@ -707,6 +721,17 @@ Dies passiert wenn das Label _start vergessen wird oder falsch benannt ist.</p>
 </li>
 </ul>
 </blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</blockquote>
+</div>
+<div class="section" id="maximum-suche">
+<h1>2. Maximum Suche</h1>
+<blockquote>
+<ul class="simple">
+<li>Siehe Abgabe 2</li>
+</ul>
 </blockquote>
 </div>
 </div>
