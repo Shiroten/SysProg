@@ -1,0 +1,54 @@
+GAS LISTING jump.s 			page 1
+
+
+   1              	.section .data
+   2              	.section .text
+   3              	
+   4              	.globl _start
+   5              	
+   6              	_start:
+   7 0000 B8F8FFFF 		movl $-8, %eax
+   7      FF
+   8 0005 83F8F7   		cmpl $-9, %eax
+   9 0008 7C04     		jl exit0	
+  10              		#jne exit1
+  11 000a 7F1A     		jg exit2
+  12              		#jle exit 3
+  13              		
+  14 000c EB30     		jmp exit
+  15              	
+  16              	exit0:
+  17 000e B8010000 		movl $1, %eax
+  17      00
+  18 0013 BB000000 		movl $0, %ebx	#exit with 0
+  18      00
+  19 0018 CD80     		int $0x80
+  20              	
+  21              	exit1:
+  22 001a B8010000 		movl $1, %eax
+  22      00
+  23 001f BB010000 		movl $1, %ebx	#exit with 1
+  23      00
+  24 0024 CD80     		int $0x80
+  25              	
+  26              	exit2:
+  27 0026 B8010000 		movl $1, %eax
+  27      00
+  28 002b BB020000 		movl $2, %ebx	#exit with 2
+  28      00
+  29 0030 CD80     		int $0x80
+  30              	
+  31              	exit3:
+  32 0032 B8010000 		movl $1, %eax
+  32      00
+  33 0037 BB030000 		movl $3, %ebx	#exit with 3
+  33      00
+  34 003c CD80     		int $0x80
+  35              	
+  36              	exit:
+  37 003e B8010000 		movl $1, %eax
+  37      00
+  38 0043 BB630000 		movl $99, %ebx	#exit with 99 as default
+  38      00
+  39 0048 CD80     		int $0x80
+  40              	

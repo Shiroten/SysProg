@@ -8,7 +8,7 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 1. Diverses	
 -------------
 	
-	1.1 Zeichnen Sie alle Register der x86 CPU in ein Diagramm. Wie ist der Name für die 8-, 16- und 32-Bit Register?
+	**1.1** Zeichnen Sie alle Register der x86 CPU in ein Diagramm. Wie ist der Name für die 8-, 16- und 32-Bit Register?
 		
 	|
 
@@ -64,12 +64,12 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 
 	|
 
-	1.2 Was bedeuten die folgenden Pseudo-Anweisungen?
+	**1.2** Was bedeuten die folgenden Pseudo-Anweisungen?
 	
 		- .data
 
 		 Data Section:
-		 Fest kodierte Werte
+		 Bereich der Initierten Variablen zur späteren Benutzung und Manipulation 
 		 
 		- .bss 
 
@@ -79,7 +79,7 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 		- .text
 
 		 Text Section:
-		 Enthält Programm Code
+		 Enthält den Programm Code
 
 		- .byte
 
@@ -115,7 +115,7 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 	|
 
 
-	1.3 Was bedeutet die folgende Zeile?
+	**1.3** Was bedeutet die folgende Zeile?
 
 		* .global _start, demofunc ?
 	
@@ -125,7 +125,7 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 
 	|
 
-	1.4 Übersetzen Sie die folgende Anweisung in Maschinencode:
+	**1.4** Übersetzen Sie die folgende Anweisung in Maschinencode:
 
 		* Maschinencode für 'str1: .asciz "SYSPROG"
 
@@ -134,25 +134,38 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 
 	|
 
-	1.6
+	**-----------Todo-----------**
 
-		* Todo
+	**1.6** Adressierungsarten üben:
 
-		| .. include:: pfad
-		|	:code:
+		* Denken Sie die Beispiele in 01-addr-modes/ durch so dass Sie wissen, was bei jedem Befehl passiert.
 
-	|	
+		  **-----------Todo-----------**
 
-	1.7
+		* Wie lang sind die einzelnen Befehle?
+		
+		  **-----------Todo-----------**
 
-		* Todo
+		* Ist "movl %eax, %ebx" ein gültiger Befehl?
 
-		| .. include:: pfad
-		|	:code:
+		  "movl %eax, %ebx" ist ein gültiger Befehel. Es wird der Inhalt von Register %eax nach %ebx geschrieben.
+
+		* Ist "movl (%eax), (%ebx)" ein gültiger Befehl?
+
+		  Ebenfall gültig. Diesmal wird was an der Adresse von %eax steht an der effektiven Stelle von %ebx geschrieben.
+
+	|
+		
+
+	**1.7** Bedingte Sprünge
+
+
+		 .. include:: jump/jump.s
+			:code:
 
 	|
 
-	1.8 Entfernen Sie das _start Label bei einem Programm und untersuchen Sie, was dann beim Assemblieren passiert. Verändern Sie in 		    einem zweiten Schritt den Namen dieses Labels.
+	**1.8** Entfernen Sie das _start Label bei einem Programm und untersuchen Sie, was dann beim Assemblieren passiert. Verändern Sie in 		    einem zweiten Schritt den Namen dieses Labels.
 	
 
 		- kein _start Label & umbenanntes Label:
