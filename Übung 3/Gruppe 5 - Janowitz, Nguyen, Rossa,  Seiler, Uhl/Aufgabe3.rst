@@ -91,11 +91,11 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa
 
 		- .long
 
-		 Fügt Daten als ganzes Wort (4 Byte) in vier "storage locations", Werte zwischen 0-4294967295
+		 Fügt Daten als ganzes Wort (4 Byte) in vier "storage locations", Werte zwischen 0-4.294.967.295
 
 		- .int
 
-		 Fügt Daten der größe 2 Byte (zwei "storage locations), Wertebereich: 0-65535 
+		 Fügt Daten der größe 2 Byte (zwei "storage locations), Wertebereich: 0-65.535 
 
 		- .ascii
 
