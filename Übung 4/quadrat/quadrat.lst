@@ -1,0 +1,26 @@
+GAS LISTING quadrat.s 			page 1
+
+
+   1              		.section .data
+   2              		.section .text
+   3              		.globl _start
+   4              	
+   5              	_start: 
+   6 0000 6A02     		pushl $2
+   7 0002 E80C0000 		call quadrat
+   7      00
+   8 0007 83C404   		addl $4, %esp
+   9 000a 89C3     		movl %eax, %ebx
+  10 000c B8010000 		movl $1, %eax
+  10      00
+  11 0011 CD80     		int  $0x80
+  12              	
+  13              	quadrat:
+  14 0013 55       		pushl %ebp
+  15 0014 89E5     		movl %esp, %ebp
+  16              		
+  17 0016 8B4508   		movl 8(%ebp), %eax
+  18 0019 0FAFC0   		imull %eax, %eax
+  19 001c 89EC     		movl %ebp, %esp
+  20 001e 5D       		popl %ebp
+  21 001f C3       		ret	
