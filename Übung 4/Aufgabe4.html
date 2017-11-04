@@ -364,19 +364,202 @@ ul.auto-toc {
 <h1 class="title">Gruppe 5 - Übung 4</h1>
 
 <p>Von:    Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl</p>
-<div class="section" id="id1">
-<h1>1.</h1>
+<div class="section" id="aufgabe-1">
+<h1>1. Aufgabe 1</h1>
 <blockquote>
-<p><strong>1.1</strong></p>
-<p><strong>1.2</strong></p>
+<p><strong>Stack</strong></p>
+<blockquote>
+<ul>
+<li><p class="first">Wozu braucht man einen Stack?</p>
+<blockquote>
+<p>Der Stack wird benötigt, um nach dem Ausführen von Unterprogrammen wieder zum                           Aufrufer zurückzukehren. Außerdem werden dort die Parameter eines                               Funktionsaufrufs abgelegt.</p>
+</blockquote>
+</li>
+<li><p class="first">Über welche Befehle spricht man den Stack an?</p>
+<blockquote>
+<p>Die Befehle sind pushl (einen Wert auf den Stack legen) und popl (den obersten                          Wert vom Stack holen und löschen). Movl %esp [Zielregister] liest einen Wert vom                                Stack ohne ihn zu löschen.</p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
 </blockquote>
 </div>
-<div class="section" id="id2">
-<h1>2.</h1>
+<div class="section" id="aufgabe-2">
+<h1>2. Aufgabe 2</h1>
+<blockquote>
+<p><strong>Funktionen</strong></p>
+<blockquote>
+<ul>
+<li><p class="first">Beschreiben Sie, was an den Stellen (1) bis (7) gemacht wird.</p>
+<blockquote>
+<pre class="code literal-block">
+...`
+pushl $2                # Push 2 auf den Stack
+pushl $4                # Push 4 auf den Stack
+call tuwas              # Rufe Funktion tuwas auf
+addl $8, %esp           # Setze den Stackpointer wieder zurück
+...
+tuwas:
+pushl %ebp              # Zuerst werden die Werte 2 und 4 auf den Stack geschoben
+movl %esp, %ebp         # Überschreiben des Basepointers mit dem Stackpointer
+subl $8, %esp           # Der Stackpointer wird um zwei Register nach unten bewegt um Platz für lokale Variablen zu reservieren
+...
+movl %ebp, %esp         # Der Stackpointer wird mit dem Basepointer überschrieben
+popl %ebp               # Der alte Basepointer wird wiederhergestellt, indem der zuvor gesicherte BP in den aktuellen geschrieben wird
+ret                     # om Stack wird gepopt und in den eip geschrieben. Damit wird die Rücksprungsadresse in den Instructionpointer geschrieben
+</pre>
+</blockquote>
+</li>
+<li><p class="first">Zeichnen Sie den Stack direkt nach der Ausführung von Zeile 5.
+Zeichnen Sie auch Framepointer und Stackpointer ein.</p>
+<blockquote>
+<p><strong>Todo</strong></p>
+<pre class="code literal-block">
+2
+4
+R.A.
+old %ebp          &lt;---- %ebp
+local varible 1
+local varible 2   &lt;---- %esp
+</pre>
+</blockquote>
+</li>
+<li><p class="first">Wie greift man innerhalb der Funktion tuwas() auf die lokalen Daten zu?
+Nehmen Sie an, dass die 8 Byte aus zwei Integer Werten bestehen.
+Schreiben Sie die Framepointer-relative Adressierung für den Integer
+mit der kleineren Adresse hin.</p>
+<blockquote>
+<p><strong>Todo</strong></p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+</div>
+<div class="section" id="funktionen">
+<h1>3. Funktionen</h1>
+<blockquote>
+<p><strong>C Aufrufkonvention</strong></p>
+<blockquote>
+<ul>
+<li><p class="first">In welcher Reihenfolge werden die Argumente der Funktion cfun(int a,
+int b, int c) auf dem Stack abgelegt?Wie wird der Rückgabewert einer Funktion an den                    Aufrufer übergeben?</p>
+<blockquote>
+<p>Die Reihenfolge ist umgedreht. Bei der Funktion foo(a, b, c) liegen im Speicher von oben nach unten c, b, a</p>
+</blockquote>
+</li>
+<li><p class="first">Unterscheiden Sie: (a) der Wert ist 32-Bit gross, (b) der Wert ist grösser
+als 32-Bit.</p>
+<blockquote>
+<p>Bei a: Wert wird in eax geschrieben.</p>
+<p>Bei b: Pointer wird in eax geschrieben</p>
+</blockquote>
+</li>
+<li><p class="first">Wer kümmert sich um die Sicherung der Register -- der Aufrufer oder
+der Aufgerufene?</p>
+<blockquote>
+<p>Der Aufrufer muss sich um die Sicherung kümmern, da der Aufgerufene alle Register überschreiben / löschen kann</p>
+</blockquote>
+</li>
+<li><p class="first">Wer korrigiert den Stack, der Aufrufer oder der Aufgerufene?</p>
+<blockquote>
+<p>Annahme: Unter Korrektur des Stacks ist das Zurücksetzen des Stackpointers (esp) gemeint. Dafür ist wieder der Aufrufer zuständig</p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+</div>
+<div class="section" id="use-the-concepts">
+<h1>5. Use the Concepts</h1>
+<blockquote>
+<p><strong>Quadrat</strong></p>
 <blockquote>
 <ul class="simple">
-<li></li>
+<li>Schreiben Sie eine Funktion quadrat(x) , die aus dem Argument x das
+Quadrat x * x berechnet. Rufen Sie diese Funktion zum Test auch ein
+paar Mal mit unterschiedlichem Argument auf.</li>
 </ul>
+<blockquote>
+<pre class="code literal-block">
+        .section .data
+        .section .text
+        .globl _start
+
+_start:
+        pushl $2
+        call quadrat
+        addl $4, %esp
+        movl %eax, %ebx
+        movl $1, %eax
+        int  $0x80
+
+quadrat:
+        pushl %ebp
+        movl %esp, %ebp
+
+        movl 8(%ebp), %eax
+        imull %eax, %eax
+        movl %ebp, %esp
+        popl %ebp
+        ret
+</pre>
+</blockquote>
+</blockquote>
+<p><strong>Maximum</strong></p>
+<blockquote>
+<ul class="simple">
+<li>Schreiben Sie die Maximumsuche aus dem Kapitel 3 nun als Funktion
+maximum(ptr) . Der Zeiger ptr zeigt auf eine Liste von Elementen, deren
+grösster Wert zurückgegeben wird. Rufen Sie diese Funktion zum Test
+ein paar Mal mit unterschiedlichen Listen auf.</li>
+</ul>
+<p><strong>Todo: Fixen</strong></p>
+<blockquote>
+<pre class="code literal-block">
+        .section .data
+
+data_items:
+        .long 3,67,34,222,45,75,54,34,44,33,22,11,66,0
+
+        .section .text
+
+        .globl _start
+_start:
+        movl $0, %edi             # move 0 into the index register
+        pushl data_items
+        call maximum
+        addl $4, %esp
+        movl %eax, %ebx
+        movl $1, %eax
+        int $0x80
+
+maximum:
+        pushl %ebp
+        movl %esp, %ebp
+
+        movl 8(%ebp), %ecx                #In ecx steht nun die Base von data_items
+        movl %ecx(,%edi, 4), %eax #Erstes Byte laden
+        movl %eax, %ebx                   #Erster wert ist vorerst der größte
+
+start_loop:                       # start loop
+        cmpl $0, %eax             # check to see if we've hit the end
+        je loop_exit
+        incl %edi                 # load next value
+        movl %ecx(,%edi,4), %eax
+        cmpl %ebx, %eax           # compare values
+        jle start_loop            # jump to loop beginning if the new
+                                  # one isn't bigger
+        movl %eax, %ebx           # move the value as the largest
+        jmp start_loop            # jump to loop beginning
+
+loop_exit:
+        movl %ebp, %esp
+        popl %ebp
+        ret
+</pre>
+</blockquote>
+</blockquote>
 </blockquote>
 </div>
 </div>

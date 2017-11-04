@@ -48,6 +48,17 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 			**Todo**
 
+			.. code::
+
+				2
+				4
+				R.A.
+				old %ebp	  <---- %ebp
+				local varible 1
+				local varible 2   <---- %esp
+
+
+
 		* Wie greift man innerhalb der Funktion tuwas() auf die lokalen Daten zu?
 		  Nehmen Sie an, dass die 8 Byte aus zwei Integer Werten bestehen.
 		  Schreiben Sie die Framepointer-relative Adressierung für den Integer
