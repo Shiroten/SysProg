@@ -1,7 +1,13 @@
 	.section .data
 
 data_items: 
-	.long 3,67,34,2,45,75,54,34,44,33,22,11,66,0
+	.long 3,17,34,2,45,35,24,34,44,33,22,11,50,0
+data_items2:
+	.long 3,67,34,2,45,55,54,34,44,33,22,11,75,0
+data_items3:
+	.long 3,67,34,2,45,75,54,34,44,33,22,11,125,0
+final:
+	.long 0
 
 	.section .text
 
@@ -11,8 +17,19 @@ _start:
 	pushl %ecx
 	call maximum
 	addl $4, %esp		  # reset StackPointer
-	
-	movl %eax, %ebx		  # prepare exit 
+	add %eax, final
+
+	leal data_items2, %ecx
+	pushl %ecx
+	call maximum
+	add %eax, final
+
+	leal data_items3, %ecx
+	pushl %ecx
+	call maximum
+	add %eax, final
+
+	movl final, %ebx		  # prepare exit 
 	movl $1, %eax
 	int $0x80
 
