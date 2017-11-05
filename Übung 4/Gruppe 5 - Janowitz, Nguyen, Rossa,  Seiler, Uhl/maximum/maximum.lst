@@ -1,0 +1,58 @@
+GAS LISTING maximum.s 			page 1
+
+
+   1              		.section .data
+   2              	
+   3              	data_items: 
+   4 0000 03000000 		.long 3,67,34,2,45,75,54,34,44,33,22,11,66,0
+   4      43000000 
+   4      22000000 
+   4      02000000 
+   4      2D000000 
+   5              	
+   6              		.section .text
+   7              	
+   8              		.globl _start
+   9              	_start:
+  10 0000 8D0D0000 		leal data_items, %ecx
+  10      0000
+  11 0006 51       		pushl %ecx
+  12 0007 E80C0000 		call maximum
+  12      00
+  13 000c 83C404   		addl $4, %esp		  # reset StackPointer
+  14              		
+  15 000f 89C3     		movl %eax, %ebx		  # prepare exit 
+  16 0011 B8010000 		movl $1, %eax
+  16      00
+  17 0016 CD80     		int $0x80
+  18              	
+  19              	maximum:
+  20 0018 55       		pushl %ebp			  # Prolog
+  21 0019 89E5     		movl %esp, %ebp			  #
+  22              		
+  23 001b 83EC04   		subl $4, %esp			  # Make room for local variable
+  24 001e 8B4D08   		movl 8(%ebp), %ecx 		  # Copy data_items adress to local variable
+  25 0021 8B01     		movl (%ecx), %eax		  # Erstes Byte laden
+  26 0023 83C104   		addl $4, %ecx		 	  # Zeige auf nächsten wert von data_items
+  27              	
+  28 0026 89C3     		movl %eax, %ebx 		  # Erster wert ist vorerst der größte
+  29              		
+  30              	start_loop:	                  	  # start loop
+  31 0028 83F800   		cmpl $0, %eax             	  # check to see if we've hit the end
+  32 002b 740D     		je loop_exit
+  33              	
+  34 002d 8B01     		movl (%ecx),%eax 		  # Siehe Oben
+  35 002f 83C104   		addl $4, %ecx			  # 
+  36              	
+  37 0032 39D8     		cmpl %ebx, %eax           	  # compare values
+  38 0034 7EF2     		jle start_loop            	  # jump to loop beginning if the new 
+  39              		                          	  # one isn't bigger
+  40 0036 89C3     		movl %eax, %ebx           	  # move the value as the largest 
+  41 0038 EBEE     		jmp start_loop            	  # jump to loop beginning
+  42              	
+  43              	loop_exit:
+  44 003a 89D8     		movl %ebx, %eax			  # Move Biggest Value to %eax for returning
+  45              	
+  46 003c 89EC     		movl %ebp, %esp			  # Epilog
+  47 003e 5D       		popl %ebp			  #
+  48 003f C3       		ret				  #

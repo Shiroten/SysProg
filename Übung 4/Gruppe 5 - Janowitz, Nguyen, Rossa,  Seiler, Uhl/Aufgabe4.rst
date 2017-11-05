@@ -35,18 +35,25 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 				addl $8, %esp		# Setze den Stackpointer wieder zurück
 				...
 				tuwas:
-				pushl %ebp		# Zuerst werden die Werte 2 und 4 auf den Stack geschoben
-				movl %esp, %ebp		# Überschreiben des Basepointers mit dem Stackpointer
-				subl $8, %esp		# Der Stackpointer wird um zwei Register nach unten bewegt um Platz für lokale Variablen zu reservieren
+				pushl %ebp		# Zuerst werden die Werte 2 und 4 auf den Stack 
+							  geschoben
+				movl %esp, %ebp		# Überschreiben des Basepointers mit dem
+ 						          Stackpointer
+				subl $8, %esp		# Der Stackpointer wird um zwei Register nach
+ 							  unten bewegt um Platz für lokale Variablen zu
+ 							  reservieren
 				...
-				movl %ebp, %esp		# Der Stackpointer wird mit dem Basepointer überschrieben
-				popl %ebp		# Der alte Basepointer wird wiederhergestellt, indem der zuvor gesicherte BP in den aktuellen geschrieben wird
-				ret			# om Stack wird gepopt und in den eip geschrieben. Damit wird die Rücksprungsadresse in den Instructionpointer geschrieben
+				movl %ebp, %esp		# Der Stackpointer wird mit dem Basepointer
+ 							  überschrieben
+				popl %ebp		# Der alte Basepointer wird wiederhergestellt,
+ 							  indem der zuvor gesicherte BP in den aktuellen
+ 							  geschrieben wird
+				ret			# Vom Stack wird gepopt und in den eip
+							  geschrieben. Damit wird die Rücksprungsadresse
+ 							  in den Instructionpointer geschrieben
 
 		* Zeichnen Sie den Stack direkt nach der Ausführung von Zeile 5.
 		  Zeichnen Sie auch Framepointer und Stackpointer ein.
-
-			**Todo**
 
 			.. code::
 
@@ -57,15 +64,15 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 				local varible 1
 				local varible 2   <---- %esp
 
-
-
 		* Wie greift man innerhalb der Funktion tuwas() auf die lokalen Daten zu?
 		  Nehmen Sie an, dass die 8 Byte aus zwei Integer Werten bestehen.
 		  Schreiben Sie die Framepointer-relative Adressierung für den Integer
 		  mit der kleineren Adresse hin.
 
-			**Todo**
+		        .. code::
 
+                               movl 12(%ebp), %eax      # Zugriff auf 2
+                               movl  8(%ebp), %ebx      # Zugriff auf 4
 
 
 3. Funktionen
@@ -113,7 +120,6 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 		  grösster Wert zurückgegeben wird. Rufen Sie diese Funktion zum Test
 		  ein paar Mal mit unterschiedlichen Listen auf.
 
-		**Todo: Fixen**
 
 		 .. include:: maximum/maximum.s
 			:code:

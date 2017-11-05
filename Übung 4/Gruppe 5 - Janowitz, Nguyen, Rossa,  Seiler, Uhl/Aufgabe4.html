@@ -400,20 +400,28 @@ call tuwas              # Rufe Funktion tuwas auf
 addl $8, %esp           # Setze den Stackpointer wieder zurück
 ...
 tuwas:
-pushl %ebp              # Zuerst werden die Werte 2 und 4 auf den Stack geschoben
-movl %esp, %ebp         # Überschreiben des Basepointers mit dem Stackpointer
-subl $8, %esp           # Der Stackpointer wird um zwei Register nach unten bewegt um Platz für lokale Variablen zu reservieren
+pushl %ebp              # Zuerst werden die Werte 2 und 4 auf den Stack
+                          geschoben
+movl %esp, %ebp         # Überschreiben des Basepointers mit dem
+                          Stackpointer
+subl $8, %esp           # Der Stackpointer wird um zwei Register nach
+                          unten bewegt um Platz für lokale Variablen zu
+                          reservieren
 ...
-movl %ebp, %esp         # Der Stackpointer wird mit dem Basepointer überschrieben
-popl %ebp               # Der alte Basepointer wird wiederhergestellt, indem der zuvor gesicherte BP in den aktuellen geschrieben wird
-ret                     # om Stack wird gepopt und in den eip geschrieben. Damit wird die Rücksprungsadresse in den Instructionpointer geschrieben
+movl %ebp, %esp         # Der Stackpointer wird mit dem Basepointer
+                          überschrieben
+popl %ebp               # Der alte Basepointer wird wiederhergestellt,
+                          indem der zuvor gesicherte BP in den aktuellen
+                          geschrieben wird
+ret                     # Vom Stack wird gepopt und in den eip
+                          geschrieben. Damit wird die Rücksprungsadresse
+                          in den Instructionpointer geschrieben
 </pre>
 </blockquote>
 </li>
 <li><p class="first">Zeichnen Sie den Stack direkt nach der Ausführung von Zeile 5.
 Zeichnen Sie auch Framepointer und Stackpointer ein.</p>
 <blockquote>
-<p><strong>Todo</strong></p>
 <pre class="code literal-block">
 2
 4
@@ -429,7 +437,10 @@ Nehmen Sie an, dass die 8 Byte aus zwei Integer Werten bestehen.
 Schreiben Sie die Framepointer-relative Adressierung für den Integer
 mit der kleineren Adresse hin.</p>
 <blockquote>
-<p><strong>Todo</strong></p>
+<pre class="code literal-block">
+movl 12(%ebp), %eax      # Zugriff auf 2
+movl  8(%ebp), %ebx      # Zugriff auf 4
+</pre>
 </blockquote>
 </li>
 </ul>
@@ -514,49 +525,56 @@ maximum(ptr) . Der Zeiger ptr zeigt auf eine Liste von Elementen, deren
 grösster Wert zurückgegeben wird. Rufen Sie diese Funktion zum Test
 ein paar Mal mit unterschiedlichen Listen auf.</li>
 </ul>
-<p><strong>Todo: Fixen</strong></p>
 <blockquote>
 <pre class="code literal-block">
         .section .data
 
 data_items:
-        .long 3,67,34,222,45,75,54,34,44,33,22,11,66,0
+        .long 3,67,34,2,45,75,54,34,44,33,22,11,66,0
 
         .section .text
 
         .globl _start
 _start:
-        movl $0, %edi             # move 0 into the index register
-        pushl data_items
+        leal data_items, %ecx
+        pushl %ecx
         call maximum
-        addl $4, %esp
-        movl %eax, %ebx
+        addl $4, %esp             # reset StackPointer
+
+        movl %eax, %ebx           # prepare exit
         movl $1, %eax
         int $0x80
 
 maximum:
-        pushl %ebp
-        movl %esp, %ebp
+        pushl %ebp                        # Prolog
+        movl %esp, %ebp                   #
 
-        movl 8(%ebp), %ecx                #In ecx steht nun die Base von data_items
-        movl %ecx(,%edi, 4), %eax #Erstes Byte laden
-        movl %eax, %ebx                   #Erster wert ist vorerst der größte
+        subl $4, %esp                     # Make room for local variable
+        movl 8(%ebp), %ecx                # Copy data_items adress to local variable
+        movl (%ecx), %eax                 # Erstes Byte laden
+        addl $4, %ecx                     # Zeige auf nächsten wert von data_items
 
-start_loop:                       # start loop
-        cmpl $0, %eax             # check to see if we've hit the end
+        movl %eax, %ebx                   # Erster wert ist vorerst der größte
+
+start_loop:                               # start loop
+        cmpl $0, %eax                     # check to see if we've hit the end
         je loop_exit
-        incl %edi                 # load next value
-        movl %ecx(,%edi,4), %eax
-        cmpl %ebx, %eax           # compare values
-        jle start_loop            # jump to loop beginning if the new
-                                  # one isn't bigger
-        movl %eax, %ebx           # move the value as the largest
-        jmp start_loop            # jump to loop beginning
+
+        movl (%ecx),%eax                  # Siehe Oben
+        addl $4, %ecx                     #
+
+        cmpl %ebx, %eax                   # compare values
+        jle start_loop                    # jump to loop beginning if the new
+                                          # one isn't bigger
+        movl %eax, %ebx                   # move the value as the largest
+        jmp start_loop                    # jump to loop beginning
 
 loop_exit:
-        movl %ebp, %esp
-        popl %ebp
-        ret
+        movl %ebx, %eax                   # Move Biggest Value to %eax for returning
+
+        movl %ebp, %esp                   # Epilog
+        popl %ebp                         #
+        ret                               #
 </pre>
 </blockquote>
 </blockquote>
