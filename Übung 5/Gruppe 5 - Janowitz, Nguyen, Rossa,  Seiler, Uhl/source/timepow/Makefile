@@ -1,13 +1,13 @@
 
-all: maximum 
+all: timepow 
 
-maximum.o: maximum.s
-	as --32 -al=maximum.lst -g -o maximum.o maximum.s
+timepow.o: timepow.s
+	as --32 -al=timepow.lst -g -o timepow.o timepow.s
 
-maximum: maximum.o
-	ld -m elf_i386 -o maximum maximum.o
+timepow: timepow.o
+	ld -m elf_i386 -o timepow timepow.o
 # Mit linker map:
-#	ld -m elf_i386 -M -Map=maximum.map -o maximum maximum.o
+#	ld -m elf_i386 -M -Map=timepow.map -o timepow timepow.o
 
 clean:
-	rm -f maximum.o maximum  *.lst *~
+	rm -f timepow.o timepow  *.lst *~

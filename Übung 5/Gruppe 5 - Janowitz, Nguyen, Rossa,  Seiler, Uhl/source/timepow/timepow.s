@@ -8,12 +8,12 @@
     .globl _start
 
 _start:
-    pushl $2        # b
-    pushl $3        # x
+    pushl $1        # b
+    pushl $7        # x
     call  timespow2
     addl  $8, %esp  
     pushl %eax      
-    pushl $3        # b    
+    pushl $0        # b    
     pushl $2        # x
     call  timespow2
     addl  $8, %esp  
@@ -29,13 +29,13 @@ _start:
 #                    shll %cl, %ebx  (shift ebx left by cl bits)
 .type timespow2, @function
 timespow2:
-    _____________________ # 1 Prolog
-    _____________________ # 2 Prolog
-    _____________________ # 3 Argument holen 
-    _____________________ # 4 Argument holen
-    _____________________ # 5 Schieben
-    _____________________ # 6 Ergebnis ablegen
-    _____________________ # 7 Epilog
-    _____________________ # 8 Epilog
-    _____________________ # 9 Zurueckkehren
+    pushl %ebp		  # 1 Prolog
+    movl %esp, %ebp	  # 2 Prolog
+    movl 12(%ebp), %ebx	  # 3 Argument holen 
+    movb 8(%ebp), %cl	  # 4 Argument holen
+    shll %cl, %ebx	  # 5 Schieben
+    movl %ebx, %eax	  # 6 Ergebnis ablegen
+    movl %ebp, %esp	  # 7 Epilog
+    popl %ebp		  # 8 Epilog
+    ret			  # 9 Zurueckkehren
 
