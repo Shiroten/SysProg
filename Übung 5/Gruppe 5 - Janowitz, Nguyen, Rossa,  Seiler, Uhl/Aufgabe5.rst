@@ -38,21 +38,21 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 		**ToUpper in C**
 
-			 .. include:: source/toupper/toupper.c
+			 .. include:: source/toupper/toupper_c/toupper.c
 				:code:
 
 		|
 
 		**ToUpper in Java**	
 
-			 .. include:: source/toupper/toupper.java
+			 .. include:: source/toupper/toupper_java/toupper.java
 				:code:
 
 		|
 
 		**ToUpper in Python**
 
-			 .. include:: source/toupper/toupper.py
+			 .. include:: source/toupper/toupper_python/toupper.py
 				:code:
 
 	|	

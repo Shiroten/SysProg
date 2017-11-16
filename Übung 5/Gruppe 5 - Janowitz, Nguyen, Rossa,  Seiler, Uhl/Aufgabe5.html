@@ -453,7 +453,49 @@ timespow2:
 <p><strong>ToUpper in C</strong></p>
 <blockquote>
 <pre class="code literal-block">
-C Code to be added
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+
+#define NOREAD &quot;\nQuelldatei konnte nicht gefunden werden&quot;
+#define NOWRITE &quot;\nZieldatei konnte nicht geöffnet werden&quot;
+#define NOCOPY &quot;\nQuelldatei kann icht auf sich selbst kopiert werden&quot;
+
+int main(int argc, char *argv[]) {
+
+    void upstr(char *s);
+
+    FILE *infile = stdin;
+    FILE *outfile = stdout;
+
+    char sbuf[512];
+    int i;
+
+    if (argc != 3){
+        fputs(&quot;Richtige Params angeben&quot;, stderr);
+        exit(1);
+    }
+
+    infile = fopen(argv[1], &quot;r&quot;);
+    outfile = fopen(argv[2], &quot;w&quot;);
+
+    while(fgets(sbuf, 512, infile) != NULL){
+        upstr(sbuf);
+        fputs(sbuf, outfile);
+    }
+
+    fcloseall();
+}
+
+void upstr(char *s){
+    int i = 0;
+
+    while (s[i]){
+        s[i] = toupper(s[i]);
+        i++;
+    }
+}
 </pre>
 </blockquote>
 <div class="line-block">
