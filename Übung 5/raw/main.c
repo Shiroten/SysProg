@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
         fputs("Richtige Params angeben", stderr);
         exit(1);
     }
-
+/*
     for(i = 1; i < 3; i++)
         upstr(argv[i]);
 
@@ -43,10 +43,11 @@ int main(int argc, char *argv[]) {
             exit(4);
         }
     }
-
-    while(fgets(sbuf, 512, infile) != NULL)
+*/
+    while(fgets(sbuf, 512, infile) != NULL){
+	upstr(sbuf);
         fputs(sbuf, outfile);
-
+    }
     fcloseall();
 }
 
