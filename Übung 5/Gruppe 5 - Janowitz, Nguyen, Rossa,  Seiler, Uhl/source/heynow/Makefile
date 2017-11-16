@@ -1,10 +1,10 @@
 
 all: heynow 
 
-maximum.o: heynow.s
+heynow.o: heynow.s
 	as --32 -al=heynow.lst -g -o heynow.o heynow.s
 
-maximum: heynow.o
+heynow: heynow.o
 	ld -m elf_i386 -o heynow heynow.o
 # Mit linker map:
 #	ld -m elf_i386 -M -Map=heynow.map -o heynow heynow.o

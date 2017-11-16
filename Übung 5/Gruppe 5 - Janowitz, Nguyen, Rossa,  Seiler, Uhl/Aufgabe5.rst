@@ -65,19 +65,24 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 			* Describe the lifecycle of a file descriptor.
 
-				**Todo**
+				A file descriptor is created when we open a file until we close it.
 
 			* What are the standard file descriptors and what are they used for?
 
-				**Todo**
+				File Descriptor 0, 1 and 2 are the standard one.
+				0 is the STDIN, 1 is the STDOUT and 2 is the STDERR
+				Where STDIN represend the default keyboard, STDOUT the screen and STDERR 					is the standard error
 
 			* What is a buffer?
 
-				**Todo**
+				A Buffer is a place to store a big junk of data for example from the 
+				read of a file
 
 			* What is the difference between the .data section and the .bss section?
 
-				**Todo**
+				The .data section is static and the .bss is dynamic for one example.
+				Also the .data section stores the initialized data from the source code
+				where the .bss holds temporary new data create in the runtime
 
 			* What are the system calls related to reading and writing files?
 
