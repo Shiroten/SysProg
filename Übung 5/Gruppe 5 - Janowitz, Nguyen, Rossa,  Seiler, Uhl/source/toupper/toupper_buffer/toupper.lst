@@ -1,0 +1,262 @@
+GAS LISTING toupper.s 			page 1
+
+
+   1              	# -*- indent-tabs-mode: nil -*- (for Emacs)
+   2              		
+   3              	# PURPOSE: This program converts an input file
+   4              	# to an output file with all letters
+   5              	# converted to uppercase.
+   6              	#
+   7              	# PROCESSING:
+   8              	# 1) Open the input file
+   9              	# 2) Open the output file
+  10              	# 4) While we're not at the end of the input file
+  11              	#    a) read part of file into our memory buffer
+  12              	#    b) go through each byte of memory
+  13              	#       if the byte is a lower-case letter,
+  14              	#       convert it to uppercase
+  15              	#    c) write the memory buffer to output file
+  16              	
+  17              	        
+  18              	        .section .data
+  19              	
+  20              	        #######CONSTANTS########
+  21              	        # system call numbers
+  22              	        .equ SYS_OPEN, 5
+  23              	        .equ SYS_WRITE, 4
+  24              	        .equ SYS_READ, 3
+  25              	        .equ SYS_CLOSE, 6
+  26              	        .equ SYS_EXIT, 1
+  27              	
+  28              	        # options for open (look at
+  29              	        # /usr/include/asm/fcntl.h for
+  30              	        # various values. You can combine them
+  31              	        # by adding them or ORing them)
+  32              	        # This is discussed at greater length
+  33              	        # in "Counting Like a Computer"
+  34              	        .equ O_RDONLY, 0
+  35              	        .equ O_CREAT_WRONLY_TRUNC, 03101
+  36              	
+  37              	        # standard file descriptors
+  38              	        .equ STDIN, 0
+  39              	        .equ STDOUT, 1
+  40              	        .equ STDERR, 2
+  41              	
+  42              	        # system call interrupt
+  43              	        .equ LINUX_SYSCALL, 0x80
+  44              	        .equ END_OF_FILE, 0 #This is the return value
+  45              	
+  46              	        # of read which means we've
+  47              	        # hit the end of the file
+  48              	        .equ NUMBER_ARGUMENTS, 2
+  49              	
+  50              	        .section .bss
+  51              	
+  52              	        # Buffer - this is where the data is loaded into
+  53              	        # from the data file and written from
+  54              	        # into the output file. This should
+  55              	        # never exceed 16,000 for various
+  56              	        # reasons.
+  57              	        .equ BUFFER_SIZE, 20
+GAS LISTING toupper.s 			page 2
+
+
+  58              	
+  59              	        #.equ BUFFER_SIZE, 100
+  60              	        #.equ BUFFER_SIZE, 500
+  61              	        #.equ BUFFER_SIZE, 100000
+  62              	
+  63              	        .lcomm BUFFER_DATA, BUFFER_SIZE
+  64              	
+  65              	        .section .text
+  66              	
+  67              	        # STACK POSITIONS
+  68              	        .equ ST_SIZE_RESERVE, 8
+  69              	        .equ ST_FD_IN, -4
+  70              	        .equ ST_FD_OUT, -8
+  71              	        .equ ST_ARGC, 0         # Number of arguments
+  72              	        .equ ST_ARGV_0, 4       # Name of program
+  73              	        .equ ST_ARGV_1, 8       # Input file name
+  74              	        .equ ST_ARGV_2, 12      # Output file name
+  75              	        .globl _start
+  76              	
+  77              	_start:
+  78              	        ### INITIALIZE PROGRAM ###
+  79              	        # save the stack pointer        
+  80              	
+  81 0000 89E5     	        movl %esp, %ebp
+  82              	
+  83              	        # Allocate space for our file descriptors
+  84              	        # on the stack
+  85 0002 83EC08   	        subl $ST_SIZE_RESERVE, %esp
+  86              	
+  87              	open_files:
+  88              	open_fd_in:
+  89              		                ### OPEN INPUT FILE ###
+  90              	                        # open syscall
+  91 0005 B8050000 	        movl $SYS_OPEN, %eax
+  91      00
+  92              	                        # input filename into %ebx
+  93 000a 8B5D08   	        movl ST_ARGV_1(%ebp), %ebx
+  94              	                        # read-only flag
+  95 000d B9000000 	        movl $O_RDONLY, %ecx
+  95      00
+  96              	                        # this doesn't really matter for reading
+  97 0012 BAB60100 	        movl $0666, %edx
+  97      00
+  98              	                        # call Linux
+  99 0017 CD80     	        int $LINUX_SYSCALL
+ 100              	store_fd_in:
+ 101              	                        # save the given file descriptor
+ 102 0019 8945FC   	        movl %eax, ST_FD_IN(%ebp)
+ 103              	
+ 104              	open_fd_out:
+ 105              	                                ### OPEN OUTPUT FILE ###
+ 106              	                                # open the file
+ 107 001c B8050000 	        movl $SYS_OPEN, %eax
+ 107      00
+ 108              	                                # output filename into %ebx
+ 109 0021 8B5D0C   	        movl ST_ARGV_2(%ebp), %ebx
+ 110              	                                # flags for writing to the file
+GAS LISTING toupper.s 			page 3
+
+
+ 111 0024 B9410600 	        movl $O_CREAT_WRONLY_TRUNC, %ecx
+ 111      00
+ 112              	                                # mode for new file (if it's created)
+ 113 0029 BAB60100 	        movl $0666, %edx
+ 113      00
+ 114              	                                # call Linux
+ 115 002e CD80     	        int $LINUX_SYSCALL
+ 116              	
+ 117              	store_fd_out:
+ 118              	                                # store the file descriptor here
+ 119 0030 8945F8   	        movl %eax, ST_FD_OUT(%ebp)
+ 120              	                                # BEGIN MAIN LOOP
+ 121              	read_loop_begin:
+ 122              	                                   # READ IN A BLOCK FROM THE INPUT FILE 
+ 123 0033 B8030000 	        movl $SYS_READ, %eax
+ 123      00
+ 124 0038 8B5DFC   	        movl ST_FD_IN(%ebp), %ebx  # get the input file descriptor
+ 125 003b B9000000 	        movl $BUFFER_DATA, %ecx    # the location to read into
+ 125      00
+ 126 0040 BA140000 	        movl $BUFFER_SIZE, %edx    # the size of the buffer
+ 126      00
+ 127 0045 CD80     	        int $LINUX_SYSCALL         # Size of buffer read is returned in %eax
+ 128 0047 83F800   	        cmpl $END_OF_FILE, %eax    # check for end of file marker
+ 129              	                                   # if found or on error, go to the end
+ 130 004a 7E22     	        jle end_loop
+ 131              	continue_read_loop:
+ 132              	        ### CONVERT THE BLOCK TO UPPER CASE ###
+ 133 004c 68000000 	        pushl $BUFFER_DATA      # location of buffer
+ 133      00
+ 134 0051 50       	        pushl %eax              # size of the buffer
+ 135 0052 E8370000 	        call convert_to_upper
+ 135      00
+ 136 0057 58       	        popl %eax               # get the size back
+ 137 0058 83C404   	        addl $4, %esp           # restore %esp
+ 138              	        ### WRITE THE BLOCK OUT TO THE OUTPUT FILE ###
+ 139 005b 89C2     	        movl %eax, %edx         # size of the buffer
+ 140 005d B8040000 	        movl $SYS_WRITE, %eax
+ 140      00
+ 141 0062 8B5DF8   	        movl ST_FD_OUT(%ebp), %ebx  # file to use
+ 142 0065 B9000000 	        movl $BUFFER_DATA, %ecx     # location of the buffer
+ 142      00
+ 143 006a CD80     	        int $LINUX_SYSCALL
+ 144 006c EBC5     	        jmp read_loop_begin
+ 145              	
+ 146              	end_loop:
+ 147              	                                ###CLOSE THE FILES###
+ 148              	                                # NOTE - we don't need to do error checking
+ 149              	                                # on these, because error conditions
+ 150              	                                # don't signify anything special here
+ 151 006e B8060000 	        movl $SYS_CLOSE, %eax
+ 151      00
+ 152 0073 8B5DF8   	        movl ST_FD_OUT(%ebp), %ebx
+ 153 0076 CD80     	        int $LINUX_SYSCALL
+ 154 0078 B8060000 	        movl $SYS_CLOSE, %eax
+ 154      00
+ 155 007d 8B5DFC   	        movl ST_FD_IN(%ebp), %ebx
+ 156 0080 CD80     	        int $LINUX_SYSCALL
+GAS LISTING toupper.s 			page 4
+
+
+ 157              	                                ### EXIT ###
+ 158 0082 B8010000 	        movl $SYS_EXIT, %eax
+ 158      00
+ 159 0087 BB000000 	        movl $0, %ebx
+ 159      00
+ 160 008c CD80     	        int $LINUX_SYSCALL
+ 161              	
+ 162              	        
+ 163              	#PURPOSE: This function actually does the
+ 164              	# conversion to upper case for a block
+ 165              	#
+ 166              	#INPUT: The first parameter is the location
+ 167              	
+ 168              	# of the block of memory to convert
+ 169              	# The second parameter is the length of
+ 170              	# that buffer
+ 171              	#
+ 172              	#OUTPUT: This function overwrites the current
+ 173              	# buffer with the upper-casified version.
+ 174              	#
+ 175              	#VARIABLES:
+ 176              	# %eax - beginning of buffer
+ 177              	# %ebx - length of buffer
+ 178              	# %edi - current buffer offset
+ 179              	# %cl - current byte being examined
+ 180              	# (first part of %ecx)
+ 181              	
+ 182              	        ### CONSTANTS ##
+ 183              	                                # The lower boundary of our search
+ 184              	        .equ LOWERCASE_A, 'a'
+ 185              	                                # The upper boundary of our search
+ 186              	        .equ LOWERCASE_Z, 'z'
+ 187              	                                # Conversion between upper and lower case
+ 188              	        .equ UPPER_CONVERSION, 'A' - 'a'
+ 189              	                                ### STACK STUFF ###
+ 190              	        .equ ST_BUFFER_LEN, 8   # Length of buffer
+ 191              	        .equ ST_BUFFER, 12      # actual buffer
+ 192              	convert_to_upper:
+ 193 008e 55       	        pushl %ebp
+ 194 008f 89E5     	        movl %esp, %ebp
+ 195              	                        ### SET UP VARIABLES ###
+ 196 0091 8B450C   	        movl ST_BUFFER(%ebp), %eax
+ 197 0094 8B5D08   	        movl ST_BUFFER_LEN(%ebp), %ebx
+ 198 0097 BF000000 	        movl $0, %edi
+ 198      00
+ 199              	
+ 200              	                        # if a buffer with zero length was given
+ 201              	                        # to us, just leave
+ 202 009c 83FB00   	        cmpl $0, %ebx
+ 203 009f 7418     	        je end_convert_loop
+ 204              	convert_loop:
+ 205              	                        # get the current byte
+ 206 00a1 8A0C38   	        movb (%eax,%edi,1), %cl
+ 207              	                        # go to the next byte unless it is between
+ 208              	                        #'a' and 'z'
+ 209 00a4 80F961   	        cmpb $LOWERCASE_A, %cl
+ 210 00a7 7C0B     	        jl next_byte
+GAS LISTING toupper.s 			page 5
+
+
+ 211 00a9 80F97A   	        cmpb $LOWERCASE_Z, %cl
+ 212 00ac 7F06     	        jg next_byte
+ 213              	                        # otherwise convert the byte to uppercase
+ 214 00ae 80C1E0   	        addb $UPPER_CONVERSION, %cl
+ 215              	                        # and store it back
+ 216 00b1 880C38   	        movb %cl, (%eax,%edi,1)
+ 217              	
+ 218              	next_byte:
+ 219 00b4 47       	        incl %edi #next byte
+ 220 00b5 39FB     	        cmpl %edi, %ebx #continue unless
+ 221              	                        # we've reached the end
+ 222 00b7 75E8     	        jne convert_loop
+ 223              	end_convert_loop:
+ 224              	                        # no return value, just leave
+ 225 00b9 89EC     	        movl %ebp, %esp
+ 226 00bb 5D       	        popl %ebp
+ 227 00bc C3       	        ret
+ 228              	        
+ 229              	# vim: expandtab sw=8 sts=8

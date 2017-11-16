@@ -1,0 +1,157 @@
+GAS LISTING heynow.s 			page 1
+
+
+   1              	# -*- indent-tabs-mode: nil -*- (for Emacs)
+   2              	    
+   3              	# PURPOSE: 
+   4              	
+   5              	        .section .data
+   6              	        
+   7              	        # File name and contents
+   8              	file_name:
+   9 0000 6865796E 	        .ascii "heynow.txt\0"
+   9      6F772E74 
+   9      787400
+  10              	file_contents:
+  11 000b 48657920 	        .ascii "Hey diddle diddle!\0"
+  11      64696464 
+  11      6C652064 
+  11      6964646C 
+  11      652100
+  12              	
+  13              	        #######CONSTANTS########
+  14              	        # system call numbers
+  15              	        .equ SYS_OPEN, 5
+  16              	        .equ SYS_WRITE, 4
+  17              	        .equ SYS_READ, 3
+  18              	        .equ SYS_CLOSE, 6
+  19              	        .equ SYS_EXIT, 1
+  20              	
+  21              	        # options for open (look at
+  22              	        # /usr/include/asm/fcntl.h for
+  23              	        # various values. You can combine them
+  24              	        # by adding them or ORing them)
+  25              	        # This is discussed at greater length
+  26              	        # in "Counting Like a Computer"
+  27              	        .equ O_RDONLY, 0
+  28              	        .equ O_CREAT_WRONLY_TRUNC, 03101
+  29              	
+  30              	        # standard file descriptors
+  31              	        .equ STDIN, 0
+  32              	        .equ STDOUT, 1
+  33              	        .equ STDERR, 2
+  34              	
+  35              	        # system call interrupt
+  36              	        .equ LINUX_SYSCALL, 0x80
+  37              	        .equ END_OF_FILE, 0 #This is the return value
+  38              	
+  39              	        # of read which means we've
+  40              	        # hit the end of the file
+  41              	        .equ NUMBER_ARGUMENTS, 2
+  42              	
+  43              	        .section .bss
+  44              	
+  45              	        # Buffer - this is where the data is loaded into
+  46              	        # from the data file and written from
+  47              	        # into the output file. This should
+  48              	        # never exceed 16,000 for various
+  49              	        # reasons.
+  50              	        .equ BUFFER_SIZE, 500
+  51              	        .lcomm BUFFER_DATA, BUFFER_SIZE
+GAS LISTING heynow.s 			page 2
+
+
+  52              	
+  53              	        .section .text
+  54              	
+  55              	        # STACK POSITIONS
+  56              	        .equ ST_SIZE_RESERVE, 8
+  57              	        .equ ST_FD_OUT, -4
+  58              	        .globl _start
+  59              	
+  60              	_start:
+  61              	        ### INITIALIZE PROGRAM ###
+  62              	        # save the stack pointer        
+  63              	
+  64 0000 89E5     	        movl %esp, %ebp
+  65              	
+  66              	        # Allocate space for our file descriptors
+  67              	        # on the stack
+  68 0002 83EC08   	        subl $ST_SIZE_RESERVE, %esp
+  69              	
+  70              	open_files:
+  71              	open_fd_out:
+  72              	                                ### OPEN OUTPUT FILE ###
+  73              	                                # open the file
+  74 0005 B8050000 	        movl $SYS_OPEN, %eax
+  74      00
+  75              	                                # output filename into %ebx
+  76 000a BB000000 	        movl $file_name, %ebx
+  76      00
+  77              	                                # flags for writing to the file
+  78 000f B9410600 	        movl $O_CREAT_WRONLY_TRUNC, %ecx
+  78      00
+  79              	                                # mode for new file (if it's created)
+  80 0014 BAB60100 	        movl $0666, %edx
+  80      00
+  81              	                                # call Linux
+  82 0019 CD80     	        int $LINUX_SYSCALL
+  83              	
+  84              	store_fd_out:
+  85              	                                # store the file descriptor here
+  86 001b 8945FC   	        movl %eax, ST_FD_OUT(%ebp)
+  87              	
+  88              	get_length:
+  89              	        # text to write
+  90 001e BB0B0000 	        movl $file_contents, %ebx
+  90      00
+  91              	        # counter
+  92 0023 BF000000 	        movl $0, %edi
+  92      00
+  93              	        
+  94              	
+  95              	length_loop:
+  96              	        # get byte
+  97 0028 8A0C3B   	        movb (%ebx,%edi,1), %cl
+  98              			
+  99              	        # if zero byte, string is done
+ 100 002b 80F900   	        cmpb $0, %cl
+ 101 002e 7403     	        je loop_end
+ 102              	        
+GAS LISTING heynow.s 			page 3
+
+
+ 103              	        # increment
+ 104 0030 47       	        incl %edi  
+ 105 0031 EBF5     	        jmp length_loop
+ 106              	        
+ 107              	loop_end:
+ 108              	        
+ 109              	        ### WRITE THE BLOCK OUT TO THE OUTPUT FILE ###
+ 110 0033 89FA     	        movl %edi, %edx         # size of the buffer
+ 111 0035 B8040000 	        movl $SYS_WRITE, %eax
+ 111      00
+ 112 003a 8B5DFC   	        movl ST_FD_OUT(%ebp), %ebx  # file to use
+ 113 003d B90B0000 	        movl $file_contents, %ecx     # location of the buffer
+ 113      00
+ 114 0042 CD80     	        int $LINUX_SYSCALL
+ 115              	
+ 116              	close_files:
+ 117              	                                ###CLOSE THE FILES###
+ 118              	                                # NOTE - we don't need to do error checking
+ 119              	                                # on these, because error conditions
+ 120              	                                # don't signify anything special here
+ 121 0044 B8060000 	        movl $SYS_CLOSE, %eax
+ 121      00
+ 122 0049 8B5DFC   	        movl ST_FD_OUT(%ebp), %ebx
+ 123 004c CD80     	        int $LINUX_SYSCALL
+ 124              	        
+ 125              	                                ### EXIT ###
+ 126 004e B8010000 	        movl $SYS_EXIT, %eax
+ 126      00
+ 127 0053 BB000000 	        movl $0, %ebx
+ 127      00
+ 128 0058 CD80     	        int $LINUX_SYSCALL
+ 129              	
+ 130              	        
+ 131              	# vim: expandtab sw=8 sts=8

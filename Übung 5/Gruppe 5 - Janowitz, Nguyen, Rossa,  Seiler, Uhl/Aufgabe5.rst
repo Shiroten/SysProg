@@ -58,8 +58,8 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 	|	
 
 
-4. Aufgaben von Kapitel 5
---------------------------
+4. Aufgaben von Kapitel 5 PGU
+-----------------------------
 
 		**Know the concepts**
 
@@ -86,7 +86,20 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 			* What are the system calls related to reading and writing files?
 
-				**Todo**
+				.. code:: 
+
+					movl $5, %eax	#Open
+					int 0x80
+
+					movl $4, %eax	#Write
+					int 0x80
+
+					movl $3, %eax	#Read
+					int 0x80
+
+					movl $6, %eax	#Close
+					int 0x80
+
 
 	|
 
