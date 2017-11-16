@@ -504,27 +504,38 @@ void upstr(char *s){
 <p><strong>ToUpper in Java</strong></p>
 <blockquote>
 <pre class="code literal-block">
-public static void main(Sting() args) {
+import java.io.*;
 
-    if args.length != 2{
-        return System.out.println(&quot;Bitte input und output file eingeben&quot;);
-        }
-    BufferedReader br = new BufferedReader(new FileReader(args[0]));
-    try {
-        StringBuilder sb = new StringBuilder();
-        String line = br.readLine();
+class toupper {
+    public static void main(String args[]) {
 
-        while (line != null) {
+        BufferedReader br;
+        String everything = &quot;&quot;;
+
+        try {
+            br = new BufferedReader(new FileReader(args[0]));
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
                 sb.append(line);
                 sb.append(System.lineSeparator());
                 line = br.readLine();
-                }
-        String everything = sb.toString();
-        } finally {
-                br.close();
-                }
-    everything = everything.toUpperCase();
-    FileUtils.writeStringToFile(new File(args[1]), everything);
+            }
+            everything = sb.toString();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        everything = everything.toUpperCase();
+        try {
+            PrintWriter out = new PrintWriter(args[1]);
+            out.println(everything);
+            out.close();
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+
+    }
 }
 </pre>
 </blockquote>

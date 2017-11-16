@@ -9,12 +9,10 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 	
 		**Aufgabe 1**
 
-
 		* Schreiben Sie eine Lösung für den kurzen Test timespow.s aus der letzten 			  Veranstaltung. Der Code befindet sich im Git Repository sysprog
 
 		 .. include:: source/timepow/timepow.s
 			:code:
-
 
 	|
 
@@ -99,7 +97,6 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 					movl $6, %eax	#Close
 					int 0x80
-
 
 	|
 
