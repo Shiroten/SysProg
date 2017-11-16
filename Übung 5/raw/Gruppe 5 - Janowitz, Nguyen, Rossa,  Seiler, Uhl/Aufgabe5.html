@@ -458,10 +458,6 @@ timespow2:
 #include &lt;string.h&gt;
 #include &lt;ctype.h&gt;
 
-#define NOREAD &quot;\nQuelldatei konnte nicht gefunden werden&quot;
-#define NOWRITE &quot;\nZieldatei konnte nicht geöffnet werden&quot;
-#define NOCOPY &quot;\nQuelldatei kann icht auf sich selbst kopiert werden&quot;
-
 int main(int argc, char *argv[]) {
 
     void upstr(char *s);
@@ -577,8 +573,9 @@ if len(sys.argv) &gt;= 3:
 <li><p class="first">What are the standard file descriptors and what are they used for?</p>
 <blockquote>
 <p>File Descriptor 0, 1 and 2 are the standard one.
-0 is the STDIN, 1 is the STDOUT and 2 is the STDERR
-Where STDIN represend the default keyboard, STDOUT the screen and STDERR                                        is the standard error</p>
+0 is the STDIN, 1 is the STDOUT and 2 is the STDERR.
+STDIN represents the default keyboard, STDOUT the screen
+and STDERR is the standard error output.</p>
 </blockquote>
 </li>
 <li><p class="first">What is a buffer?</p>
@@ -589,9 +586,9 @@ read of a file</p>
 </li>
 <li><p class="first">What is the difference between the .data section and the .bss section?</p>
 <blockquote>
-<p>The .data section is static and the .bss is dynamic for one example.
+<p>The .data section is static and the .bss is dynamic for example.
 Also the .data section stores the initialized data from the source code
-where the .bss holds temporary new data create in the runtime</p>
+where the .bss holds temporary new data created in the runtime</p>
 </blockquote>
 </li>
 <li><p class="first">What are the system calls related to reading and writing files?</p>

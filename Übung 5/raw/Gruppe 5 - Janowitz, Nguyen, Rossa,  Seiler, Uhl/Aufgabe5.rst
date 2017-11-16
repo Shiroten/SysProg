@@ -68,8 +68,10 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 			* What are the standard file descriptors and what are they used for?
 
 				File Descriptor 0, 1 and 2 are the standard one.
-				0 is the STDIN, 1 is the STDOUT and 2 is the STDERR
-				Where STDIN represend the default keyboard, STDOUT the screen and STDERR 					is the standard error
+				0 is the STDIN, 1 is the STDOUT and 2 is the STDERR.
+				STDIN represents the default keyboard, STDOUT the screen 
+				and STDERR is the standard error output.
+
 
 			* What is a buffer?
 
@@ -78,9 +80,9 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 			* What is the difference between the .data section and the .bss section?
 
-				The .data section is static and the .bss is dynamic for one example.
+				The .data section is static and the .bss is dynamic for example.
 				Also the .data section stores the initialized data from the source code
-				where the .bss holds temporary new data create in the runtime
+				where the .bss holds temporary new data created in the runtime
 
 			* What are the system calls related to reading and writing files?
 

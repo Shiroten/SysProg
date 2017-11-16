@@ -3,10 +3,6 @@
 #include <string.h>
 #include <ctype.h>
 
-#define NOREAD "\nQuelldatei konnte nicht gefunden werden"
-#define NOWRITE "\nZieldatei konnte nicht geöffnet werden"
-#define NOCOPY "\nQuelldatei kann icht auf sich selbst kopiert werden"
-
 int main(int argc, char *argv[]) {
 
     void upstr(char *s);
