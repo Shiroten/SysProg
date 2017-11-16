@@ -364,236 +364,885 @@ ul.auto-toc {
 <h1 class="title">Gruppe 5 - Übung 4</h1>
 
 <p>Von:    Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl</p>
-<div class="section" id="aufgabe-1">
-<h1>1. Aufgabe 1</h1>
+<div class="section" id="timespow">
+<h1>1. Timespow</h1>
 <blockquote>
-<p><strong>Stack</strong></p>
 <blockquote>
-<ul>
-<li><p class="first">Wozu braucht man einen Stack?</p>
-<blockquote>
-<p>Der Stack wird benötigt, um nach dem Ausführen von Unterprogrammen wieder zum                           Aufrufer zurückzukehren. Außerdem werden dort die Parameter eines                               Funktionsaufrufs abgelegt.</p>
-</blockquote>
-</li>
-<li><p class="first">Über welche Befehle spricht man den Stack an?</p>
-<blockquote>
-<p>Die Befehle sind pushl (einen Wert auf den Stack legen) und popl (den obersten                          Wert vom Stack holen und löschen). Movl %esp [Zielregister] liest einen Wert vom                                Stack ohne ihn zu löschen.</p>
-</blockquote>
-</li>
-</ul>
-</blockquote>
-</blockquote>
-</div>
-<div class="section" id="aufgabe-2">
-<h1>2. Aufgabe 2</h1>
-<blockquote>
-<p><strong>Funktionen</strong></p>
-<blockquote>
-<ul>
-<li><p class="first">Beschreiben Sie, was an den Stellen (1) bis (7) gemacht wird.</p>
-<blockquote>
-<pre class="code literal-block">
-...`
-pushl $2                # Push 2 auf den Stack
-pushl $4                # Push 4 auf den Stack
-call tuwas              # Rufe Funktion tuwas auf
-addl $8, %esp           # Setze den Stackpointer wieder zurück
-...
-tuwas:
-pushl %ebp              # Zuerst werden die Werte 2 und 4 auf den Stack
-                          geschoben
-movl %esp, %ebp         # Überschreiben des Basepointers mit dem
-                          Stackpointer
-subl $8, %esp           # Der Stackpointer wird um zwei Register nach
-                          unten bewegt um Platz für lokale Variablen zu
-                          reservieren
-...
-movl %ebp, %esp         # Der Stackpointer wird mit dem Basepointer
-                          überschrieben
-popl %ebp               # Der alte Basepointer wird wiederhergestellt,
-                          indem der zuvor gesicherte BP in den aktuellen
-                          geschrieben wird
-ret                     # Vom Stack wird gepopt und in den eip
-                          geschrieben. Damit wird die Rücksprungsadresse
-                          in den Instructionpointer geschrieben
-</pre>
-</blockquote>
-</li>
-<li><p class="first">Zeichnen Sie den Stack direkt nach der Ausführung von Zeile 5.
-Zeichnen Sie auch Framepointer und Stackpointer ein.</p>
-<blockquote>
-<pre class="code literal-block">
-2
-4
-R.A.
-old %ebp          &lt;---- %ebp
-local varible 1
-local varible 2   &lt;---- %esp
-</pre>
-</blockquote>
-</li>
-<li><p class="first">Wie greift man innerhalb der Funktion tuwas() auf die lokalen Daten zu?
-Nehmen Sie an, dass die 8 Byte aus zwei Integer Werten bestehen.
-Schreiben Sie die Framepointer-relative Adressierung für den Integer
-mit der kleineren Adresse hin.</p>
-<blockquote>
-<pre class="code literal-block">
-movl 12(%ebp), %eax      # Zugriff auf 2
-movl  8(%ebp), %ebx      # Zugriff auf 4
-</pre>
-</blockquote>
-</li>
-</ul>
-</blockquote>
-</blockquote>
-</div>
-<div class="section" id="funktionen">
-<h1>3. Funktionen</h1>
-<blockquote>
-<p><strong>C Aufrufkonvention</strong></p>
-<blockquote>
-<ul>
-<li><p class="first">In welcher Reihenfolge werden die Argumente der Funktion cfun(int a,
-int b, int c) auf dem Stack abgelegt?Wie wird der Rückgabewert einer Funktion an den                    Aufrufer übergeben?</p>
-<blockquote>
-<p>Die Reihenfolge ist umgedreht. Bei der Funktion foo(a, b, c) liegen im Speicher von oben nach unten c, b, a</p>
-</blockquote>
-</li>
-<li><p class="first">Unterscheiden Sie: (a) der Wert ist 32-Bit gross, (b) der Wert ist grösser
-als 32-Bit.</p>
-<blockquote>
-<p>Bei a: Wert wird in eax geschrieben.</p>
-<p>Bei b: Pointer wird in eax geschrieben</p>
-</blockquote>
-</li>
-<li><p class="first">Wer kümmert sich um die Sicherung der Register -- der Aufrufer oder
-der Aufgerufene?</p>
-<blockquote>
-<p>Der Aufrufer muss sich um die Sicherung kümmern, da der Aufgerufene alle Register überschreiben / löschen kann</p>
-</blockquote>
-</li>
-<li><p class="first">Wer korrigiert den Stack, der Aufrufer oder der Aufgerufene?</p>
-<blockquote>
-<p>Annahme: Unter Korrektur des Stacks ist das Zurücksetzen des Stackpointers (esp) gemeint. Dafür ist wieder der Aufrufer zuständig</p>
-</blockquote>
-</li>
-</ul>
-</blockquote>
-</blockquote>
-</div>
-<div class="section" id="use-the-concepts">
-<h1>5. Use the Concepts</h1>
-<blockquote>
-<p><strong>Quadrat</strong></p>
-<blockquote>
+<p><strong>Aufgabe 1</strong></p>
 <ul class="simple">
-<li>Schreiben Sie eine Funktion quadrat(x) , die aus dem Argument x das
-Quadrat x * x berechnet. Rufen Sie diese Funktion zum Test auch ein
-paar Mal mit unterschiedlichem Argument auf.</li>
+<li>Schreiben Sie eine Lösung für den kurzen Test timespow.s aus der letzten                        Veranstaltung. Der Code befindet sich im Git Repository sysprog</li>
 </ul>
 <blockquote>
 <pre class="code literal-block">
+# Systemnahe Programmierung - Testen Sie Ihre Kenntnisse!
+# H. Hoegl, 2012-11-08
+
+#   timespow(3, 2) + timespow(2, 3)
+
+    .section .data
+    .section .text
+    .globl _start
+
+_start:
+    pushl $2        # b
+    pushl $3        # x
+    call  timespow2
+    addl  $8, %esp
+    pushl %eax
+    pushl $3        # b
+    pushl $2        # x
+    call  timespow2
+    addl  $8, %esp
+    popl  %ebx
+    addl %eax, %ebx
+    movl $1, %eax
+    int $0x80
+
+
+# timespow2(x, b)
+#   return x * 2^b
+#   Trick: x * 2^b = shift argument x left by b bits
+#                    shll %cl, %ebx  (shift ebx left by cl bits)
+.type timespow2, &#64;function
+timespow2:
+    _____________________ # 1 Prolog
+    _____________________ # 2 Prolog
+    _____________________ # 3 Argument holen
+    _____________________ # 4 Argument holen
+    _____________________ # 5 Schieben
+    _____________________ # 6 Ergebnis ablegen
+    _____________________ # 7 Epilog
+    _____________________ # 8 Epilog
+    _____________________ # 9 Zurueckkehren
+
+</pre>
+</blockquote>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</blockquote>
+</div>
+<div class="section" id="selbst-ubung">
+<h1>2. Selbst Übung</h1>
+<blockquote>
+<blockquote>
+<p><strong>Aufgabe 2</strong></p>
+<ul class="simple">
+<li>Vollziehen Sie das im Kapitel 5 (Bartlett) beschriebene Programm mit dem Debugger gdb                   nach</li>
+</ul>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</blockquote>
+</div>
+<div class="section" id="toupper-in-anderen-sprachen">
+<h1>3. ToUpper in anderen Sprachen</h1>
+<blockquote>
+<blockquote>
+<p><strong>Aufgabe 3</strong></p>
+<ul class="simple">
+<li>Formulieren Sie das Programm aus Kapitel 5 in den Sprachen</li>
+</ul>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<p><strong>ToUpper in C</strong></p>
+<blockquote>
+<pre class="code literal-block">
+To be replaced
+</pre>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>ToUpper in Java</strong></p>
+<blockquote>
+<pre class="code literal-block">
+To be replaced
+</pre>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>ToUpper in Python</strong></p>
+<blockquote>
+<pre class="code literal-block">
+To be replaced
+</pre>
+</blockquote>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</blockquote>
+</div>
+<div class="section" id="aufgaben-von-kapitel-5">
+<h1>4. Aufgaben von Kapitel 5</h1>
+<blockquote>
+<blockquote>
+<p><strong>Know the concepts</strong></p>
+<blockquote>
+<ul>
+<li><p class="first">Describe the lifecycle of a file descriptor.</p>
+<blockquote>
+<p><strong>Todo</strong></p>
+</blockquote>
+</li>
+<li><p class="first">What are the standard file descriptors and what are they used for?</p>
+<blockquote>
+<p><strong>Todo</strong></p>
+</blockquote>
+</li>
+<li><p class="first">What is a buffer?</p>
+<blockquote>
+<p><strong>Todo</strong></p>
+</blockquote>
+</li>
+<li><p class="first">What is the difference between the .data section and the .bss section?</p>
+<blockquote>
+<p><strong>Todo</strong></p>
+</blockquote>
+</li>
+<li><p class="first">What are the system calls related to reading and writing files?</p>
+<blockquote>
+<p><strong>Todo</strong></p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<p><strong>Use the concepts</strong></p>
+<ul>
+<li><p class="first">Modify the toupper program so that it reads from STDIN and writes to STDOUT instead of using the files on the command-line.</p>
+<blockquote>
+<pre class="code literal-block">
+# -*- indent-tabs-mode: nil -*- (for Emacs)
+
+# PURPOSE: This program converts an input file
+# to an output file with all letters
+# converted to uppercase.
+#
+# PROCESSING:
+# 1) Open the input file
+# 2) Open the output file
+# 4) While we're not at the end of the input file
+#    a) read part of file into our memory buffer
+#    b) go through each byte of memory
+#       if the byte is a lower-case letter,
+#       convert it to uppercase
+#    c) write the memory buffer to output file
+
+
         .section .data
+
+        #######CONSTANTS########
+        # system call numbers
+        .equ SYS_OPEN, 5
+        .equ SYS_WRITE, 4
+        .equ SYS_READ, 3
+        .equ SYS_CLOSE, 6
+        .equ SYS_EXIT, 1
+
+        # options for open (look at
+        # /usr/include/asm/fcntl.h for
+        # various values. You can combine them
+        # by adding them or ORing them)
+        # This is discussed at greater length
+        # in &quot;Counting Like a Computer&quot;
+        .equ O_RDONLY, 0
+        .equ O_CREAT_WRONLY_TRUNC, 03101
+
+        # standard file descriptors
+        .equ STDIN, 0
+        .equ STDOUT, 1
+        .equ STDERR, 2
+
+        # system call interrupt
+        .equ LINUX_SYSCALL, 0x80
+        .equ END_OF_FILE, 0 #This is the return value
+
+        # of read which means we've
+        # hit the end of the file
+        .equ NUMBER_ARGUMENTS, 2
+
+        .section .bss
+
+        # Buffer - this is where the data is loaded into
+        # from the data file and written from
+        # into the output file. This should
+        # never exceed 16,000 for various
+        # reasons.
+        .equ BUFFER_SIZE, 500
+        .lcomm BUFFER_DATA, BUFFER_SIZE
+
         .section .text
+
+        # STACK POSITIONS
+        .equ ST_SIZE_RESERVE, 8
+        .equ ST_FD_IN, -4
+        .equ ST_FD_OUT, -8
+        .equ ST_ARGC, 0         # Number of arguments
+        .equ ST_ARGV_0, 4       # Name of program
+        .equ ST_ARGV_1, 8       # Input file name
+        .equ ST_ARGV_2, 12      # Output file name
         .globl _start
 
 _start:
-        pushl $2
-        call quadrat
-        addl $4, %esp
-        movl %eax, %ebx
-        movl $1, %eax
-        int  $0x80
+        ### INITIALIZE PROGRAM ###
+        # save the stack pointer
 
-quadrat:
-        pushl %ebp
         movl %esp, %ebp
 
-        movl 8(%ebp), %eax
-        imull %eax, %eax
+        # Allocate space for our file descriptors
+        # on the stack
+        subl $ST_SIZE_RESERVE, %esp
+
+open_files:
+open_fd_in:
+                        ### OPEN INPUT FILE ###
+                        # open syscall
+        movl $SYS_OPEN, %eax
+                        # input filename into %ebx
+        movl ST_ARGV_1(%ebp), %ebx
+                        # read-only flag
+        movl $O_RDONLY, %ecx
+                        # this doesn't really matter for reading
+        movl $0666, %edx
+                        # call Linux
+        int $LINUX_SYSCALL
+store_fd_in:
+                        # save the given file descriptor
+        movl %eax, ST_FD_IN(%ebp)
+
+open_fd_out:
+                                ### OPEN OUTPUT FILE ###
+                                # open the file
+        movl $SYS_OPEN, %eax
+                                # output filename into %ebx
+        movl ST_ARGV_2(%ebp), %ebx
+                                # flags for writing to the file
+        movl $O_CREAT_WRONLY_TRUNC, %ecx
+                                # mode for new file (if it's created)
+        movl $0666, %edx
+                                # call Linux
+        int $LINUX_SYSCALL
+
+store_fd_out:
+                                # store the file descriptor here
+        movl %eax, ST_FD_OUT(%ebp)
+                                # BEGIN MAIN LOOP
+read_loop_begin:
+                                   # READ IN A BLOCK FROM THE INPUT FILE
+        movl $SYS_READ, %eax
+        movl ST_FD_IN(%ebp), %ebx  # get the input file descriptor
+        movl $BUFFER_DATA, %ecx    # the location to read into
+        movl $BUFFER_SIZE, %edx    # the size of the buffer
+        int $LINUX_SYSCALL         # Size of buffer read is returned in %eax
+        cmpl $END_OF_FILE, %eax    # check for end of file marker
+                                   # if found or on error, go to the end
+        jle end_loop
+continue_read_loop:
+        ### CONVERT THE BLOCK TO UPPER CASE ###
+        pushl $BUFFER_DATA      # location of buffer
+        pushl %eax              # size of the buffer
+        call convert_to_upper
+        popl %eax               # get the size back
+        addl $4, %esp           # restore %esp
+        ### WRITE THE BLOCK OUT TO THE OUTPUT FILE ###
+        movl %eax, %edx         # size of the buffer
+        movl $SYS_WRITE, %eax
+        movl ST_FD_OUT(%ebp), %ebx  # file to use
+        movl $BUFFER_DATA, %ecx     # location of the buffer
+        int $LINUX_SYSCALL
+        jmp read_loop_begin
+
+end_loop:
+                                ###CLOSE THE FILES###
+                                # NOTE - we don't need to do error checking
+                                # on these, because error conditions
+                                # don't signify anything special here
+        movl $SYS_CLOSE, %eax
+        movl ST_FD_OUT(%ebp), %ebx
+        int $LINUX_SYSCALL
+        movl $SYS_CLOSE, %eax
+        movl ST_FD_IN(%ebp), %ebx
+        int $LINUX_SYSCALL
+                                ### EXIT ###
+        movl $SYS_EXIT, %eax
+        movl $0, %ebx
+        int $LINUX_SYSCALL
+
+
+#PURPOSE: This function actually does the
+# conversion to upper case for a block
+#
+#INPUT: The first parameter is the location
+
+# of the block of memory to convert
+# The second parameter is the length of
+# that buffer
+#
+#OUTPUT: This function overwrites the current
+# buffer with the upper-casified version.
+#
+#VARIABLES:
+# %eax - beginning of buffer
+# %ebx - length of buffer
+# %edi - current buffer offset
+# %cl - current byte being examined
+# (first part of %ecx)
+
+        ### CONSTANTS ##
+                                # The lower boundary of our search
+        .equ LOWERCASE_A, 'a'
+                                # The upper boundary of our search
+        .equ LOWERCASE_Z, 'z'
+                                # Conversion between upper and lower case
+        .equ UPPER_CONVERSION, 'A' - 'a'
+                                ### STACK STUFF ###
+        .equ ST_BUFFER_LEN, 8   # Length of buffer
+        .equ ST_BUFFER, 12      # actual buffer
+convert_to_upper:
+        pushl %ebp
+        movl %esp, %ebp
+                        ### SET UP VARIABLES ###
+        movl ST_BUFFER(%ebp), %eax
+        movl ST_BUFFER_LEN(%ebp), %ebx
+        movl $0, %edi
+
+                        # if a buffer with zero length was given
+                        # to us, just leave
+        cmpl $0, %ebx
+        je end_convert_loop
+convert_loop:
+                        # get the current byte
+        movb (%eax,%edi,1), %cl
+                        # go to the next byte unless it is between
+                        #'a' and 'z'
+        cmpb $LOWERCASE_A, %cl
+        jl next_byte
+        cmpb $LOWERCASE_Z, %cl
+        jg next_byte
+                        # otherwise convert the byte to uppercase
+        addb $UPPER_CONVERSION, %cl
+                        # and store it back
+        movb %cl, (%eax,%edi,1)
+
+next_byte:
+        incl %edi #next byte
+        cmpl %edi, %ebx #continue unless
+                        # we've reached the end
+        jne convert_loop
+end_convert_loop:
+                        # no return value, just leave
         movl %ebp, %esp
         popl %ebp
         ret
+
+# vim: expandtab sw=8 sts=8
 </pre>
 </blockquote>
-</blockquote>
-<p><strong>Maximum</strong></p>
-<blockquote>
-<ul class="simple">
-<li>Schreiben Sie die Maximumsuche aus dem Kapitel 3 nun als Funktion
-maximum(ptr) . Der Zeiger ptr zeigt auf eine Liste von Elementen, deren
-grösster Wert zurückgegeben wird. Rufen Sie diese Funktion zum Test
-ein paar Mal mit unterschiedlichen Listen auf.</li>
+</li>
 </ul>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<p><strong>ToUpper Buffer Version</strong></p>
+<ul>
+<li><p class="first">Change the size of the buffer.</p>
 <blockquote>
 <pre class="code literal-block">
+# -*- indent-tabs-mode: nil -*- (for Emacs)
+
+# PURPOSE: This program converts an input file
+# to an output file with all letters
+# converted to uppercase.
+#
+# PROCESSING:
+# 1) Open the input file
+# 2) Open the output file
+# 4) While we're not at the end of the input file
+#    a) read part of file into our memory buffer
+#    b) go through each byte of memory
+#       if the byte is a lower-case letter,
+#       convert it to uppercase
+#    c) write the memory buffer to output file
+
+
         .section .data
 
-data_items:
-        .long 3,17,34,2,45,35,24,34,44,33,22,11,50,0
-data_items2:
-        .long 3,67,34,2,45,55,54,34,44,33,22,11,75,0
-data_items3:
-        .long 3,67,34,2,45,75,54,34,44,33,22,11,125,0
-final:
-        .long 0
+        #######CONSTANTS########
+        # system call numbers
+        .equ SYS_OPEN, 5
+        .equ SYS_WRITE, 4
+        .equ SYS_READ, 3
+        .equ SYS_CLOSE, 6
+        .equ SYS_EXIT, 1
+
+        # options for open (look at
+        # /usr/include/asm/fcntl.h for
+        # various values. You can combine them
+        # by adding them or ORing them)
+        # This is discussed at greater length
+        # in &quot;Counting Like a Computer&quot;
+        .equ O_RDONLY, 0
+        .equ O_CREAT_WRONLY_TRUNC, 03101
+
+        # standard file descriptors
+        .equ STDIN, 0
+        .equ STDOUT, 1
+        .equ STDERR, 2
+
+        # system call interrupt
+        .equ LINUX_SYSCALL, 0x80
+        .equ END_OF_FILE, 0 #This is the return value
+
+        # of read which means we've
+        # hit the end of the file
+        .equ NUMBER_ARGUMENTS, 2
+
+        .section .bss
+
+        # Buffer - this is where the data is loaded into
+        # from the data file and written from
+        # into the output file. This should
+        # never exceed 16,000 for various
+        # reasons.
+        .equ BUFFER_SIZE, 500
+        .lcomm BUFFER_DATA, BUFFER_SIZE
 
         .section .text
 
+        # STACK POSITIONS
+        .equ ST_SIZE_RESERVE, 8
+        .equ ST_FD_IN, -4
+        .equ ST_FD_OUT, -8
+        .equ ST_ARGC, 0         # Number of arguments
+        .equ ST_ARGV_0, 4       # Name of program
+        .equ ST_ARGV_1, 8       # Input file name
+        .equ ST_ARGV_2, 12      # Output file name
         .globl _start
+
 _start:
-        leal data_items, %ecx
-        pushl %ecx
-        call maximum
-        addl $4, %esp             # reset StackPointer
-        add %eax, final
+        ### INITIALIZE PROGRAM ###
+        # save the stack pointer
 
-        leal data_items2, %ecx
-        pushl %ecx
-        call maximum
-        add %eax, final
+        movl %esp, %ebp
 
-        leal data_items3, %ecx
-        pushl %ecx
-        call maximum
-        add %eax, final
+        # Allocate space for our file descriptors
+        # on the stack
+        subl $ST_SIZE_RESERVE, %esp
 
-        movl final, %ebx                  # prepare exit
-        movl $1, %eax
-        int $0x80
+open_files:
+open_fd_in:
+                        ### OPEN INPUT FILE ###
+                        # open syscall
+        movl $SYS_OPEN, %eax
+                        # input filename into %ebx
+        movl ST_ARGV_1(%ebp), %ebx
+                        # read-only flag
+        movl $O_RDONLY, %ecx
+                        # this doesn't really matter for reading
+        movl $0666, %edx
+                        # call Linux
+        int $LINUX_SYSCALL
+store_fd_in:
+                        # save the given file descriptor
+        movl %eax, ST_FD_IN(%ebp)
 
-maximum:
-        pushl %ebp                        # Prolog
-        movl %esp, %ebp                   #
+open_fd_out:
+                                ### OPEN OUTPUT FILE ###
+                                # open the file
+        movl $SYS_OPEN, %eax
+                                # output filename into %ebx
+        movl ST_ARGV_2(%ebp), %ebx
+                                # flags for writing to the file
+        movl $O_CREAT_WRONLY_TRUNC, %ecx
+                                # mode for new file (if it's created)
+        movl $0666, %edx
+                                # call Linux
+        int $LINUX_SYSCALL
 
-        subl $4, %esp                     # Make room for local variable
-        movl 8(%ebp), %ecx                # Copy data_items adress to local variable
-        movl (%ecx), %eax                 # Erstes Byte laden
-        addl $4, %ecx                     # Zeige auf nächsten wert von data_items
+store_fd_out:
+                                # store the file descriptor here
+        movl %eax, ST_FD_OUT(%ebp)
+                                # BEGIN MAIN LOOP
+read_loop_begin:
+                                   # READ IN A BLOCK FROM THE INPUT FILE
+        movl $SYS_READ, %eax
+        movl ST_FD_IN(%ebp), %ebx  # get the input file descriptor
+        movl $BUFFER_DATA, %ecx    # the location to read into
+        movl $BUFFER_SIZE, %edx    # the size of the buffer
+        int $LINUX_SYSCALL         # Size of buffer read is returned in %eax
+        cmpl $END_OF_FILE, %eax    # check for end of file marker
+                                   # if found or on error, go to the end
+        jle end_loop
+continue_read_loop:
+        ### CONVERT THE BLOCK TO UPPER CASE ###
+        pushl $BUFFER_DATA      # location of buffer
+        pushl %eax              # size of the buffer
+        call convert_to_upper
+        popl %eax               # get the size back
+        addl $4, %esp           # restore %esp
+        ### WRITE THE BLOCK OUT TO THE OUTPUT FILE ###
+        movl %eax, %edx         # size of the buffer
+        movl $SYS_WRITE, %eax
+        movl ST_FD_OUT(%ebp), %ebx  # file to use
+        movl $BUFFER_DATA, %ecx     # location of the buffer
+        int $LINUX_SYSCALL
+        jmp read_loop_begin
 
-        movl %eax, %ebx                   # Erster wert ist vorerst der größte
+end_loop:
+                                ###CLOSE THE FILES###
+                                # NOTE - we don't need to do error checking
+                                # on these, because error conditions
+                                # don't signify anything special here
+        movl $SYS_CLOSE, %eax
+        movl ST_FD_OUT(%ebp), %ebx
+        int $LINUX_SYSCALL
+        movl $SYS_CLOSE, %eax
+        movl ST_FD_IN(%ebp), %ebx
+        int $LINUX_SYSCALL
+                                ### EXIT ###
+        movl $SYS_EXIT, %eax
+        movl $0, %ebx
+        int $LINUX_SYSCALL
 
-start_loop:                               # start loop
-        cmpl $0, %eax                     # check to see if we've hit the end
-        je loop_exit
 
-        movl (%ecx),%eax                  # Siehe Oben
-        addl $4, %ecx                     #
+#PURPOSE: This function actually does the
+# conversion to upper case for a block
+#
+#INPUT: The first parameter is the location
 
-        cmpl %ebx, %eax                   # compare values
-        jle start_loop                    # jump to loop beginning if the new
-                                          # one isn't bigger
-        movl %eax, %ebx                   # move the value as the largest
-        jmp start_loop                    # jump to loop beginning
+# of the block of memory to convert
+# The second parameter is the length of
+# that buffer
+#
+#OUTPUT: This function overwrites the current
+# buffer with the upper-casified version.
+#
+#VARIABLES:
+# %eax - beginning of buffer
+# %ebx - length of buffer
+# %edi - current buffer offset
+# %cl - current byte being examined
+# (first part of %ecx)
 
-loop_exit:
-        movl %ebx, %eax                   # Move Biggest Value to %eax for returning
+        ### CONSTANTS ##
+                                # The lower boundary of our search
+        .equ LOWERCASE_A, 'a'
+                                # The upper boundary of our search
+        .equ LOWERCASE_Z, 'z'
+                                # Conversion between upper and lower case
+        .equ UPPER_CONVERSION, 'A' - 'a'
+                                ### STACK STUFF ###
+        .equ ST_BUFFER_LEN, 8   # Length of buffer
+        .equ ST_BUFFER, 12      # actual buffer
+convert_to_upper:
+        pushl %ebp
+        movl %esp, %ebp
+                        ### SET UP VARIABLES ###
+        movl ST_BUFFER(%ebp), %eax
+        movl ST_BUFFER_LEN(%ebp), %ebx
+        movl $0, %edi
 
-        movl %ebp, %esp                   # Epilog
-        popl %ebp                         #
-        ret                               #
+                        # if a buffer with zero length was given
+                        # to us, just leave
+        cmpl $0, %ebx
+        je end_convert_loop
+convert_loop:
+                        # get the current byte
+        movb (%eax,%edi,1), %cl
+                        # go to the next byte unless it is between
+                        #'a' and 'z'
+        cmpb $LOWERCASE_A, %cl
+        jl next_byte
+        cmpb $LOWERCASE_Z, %cl
+        jg next_byte
+                        # otherwise convert the byte to uppercase
+        addb $UPPER_CONVERSION, %cl
+                        # and store it back
+        movb %cl, (%eax,%edi,1)
+
+next_byte:
+        incl %edi #next byte
+        cmpl %edi, %ebx #continue unless
+                        # we've reached the end
+        jne convert_loop
+end_convert_loop:
+                        # no return value, just leave
+        movl %ebp, %esp
+        popl %ebp
+        ret
+
+# vim: expandtab sw=8 sts=8
 </pre>
 </blockquote>
+</li>
+</ul>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<p><strong>ToUpper BSS Version</strong></p>
+<ul>
+<li><p class="first">Rewrite the program so that it uses storage in the .bss section rather than the stack to store the file descriptors.</p>
+<blockquote>
+<pre class="code literal-block">
+# -*- indent-tabs-mode: nil -*- (for Emacs)
+
+# PURPOSE: This program converts an input file
+# to an output file with all letters
+# converted to uppercase.
+#
+# PROCESSING:
+# 1) Open the input file
+# 2) Open the output file
+# 4) While we're not at the end of the input file
+#    a) read part of file into our memory buffer
+#    b) go through each byte of memory
+#       if the byte is a lower-case letter,
+#       convert it to uppercase
+#    c) write the memory buffer to output file
+
+
+        .section .data
+
+        #######CONSTANTS########
+        # system call numbers
+        .equ SYS_OPEN, 5
+        .equ SYS_WRITE, 4
+        .equ SYS_READ, 3
+        .equ SYS_CLOSE, 6
+        .equ SYS_EXIT, 1
+
+        # options for open (look at
+        # /usr/include/asm/fcntl.h for
+        # various values. You can combine them
+        # by adding them or ORing them)
+        # This is discussed at greater length
+        # in &quot;Counting Like a Computer&quot;
+        .equ O_RDONLY, 0
+        .equ O_CREAT_WRONLY_TRUNC, 03101
+
+        # standard file descriptors
+        .equ STDIN, 0
+        .equ STDOUT, 1
+        .equ STDERR, 2
+
+        # system call interrupt
+        .equ LINUX_SYSCALL, 0x80
+        .equ END_OF_FILE, 0 #This is the return value
+
+        # of read which means we've
+        # hit the end of the file
+        .equ NUMBER_ARGUMENTS, 2
+
+        .section .bss
+
+        # Buffer - this is where the data is loaded into
+        # from the data file and written from
+        # into the output file. This should
+        # never exceed 16,000 for various
+        # reasons.
+        .equ BUFFER_SIZE, 500
+        .lcomm BUFFER_DATA, BUFFER_SIZE
+
+        .section .text
+
+        # STACK POSITIONS
+        .equ ST_SIZE_RESERVE, 8
+        .equ ST_FD_IN, -4
+        .equ ST_FD_OUT, -8
+        .equ ST_ARGC, 0         # Number of arguments
+        .equ ST_ARGV_0, 4       # Name of program
+        .equ ST_ARGV_1, 8       # Input file name
+        .equ ST_ARGV_2, 12      # Output file name
+        .globl _start
+
+_start:
+        ### INITIALIZE PROGRAM ###
+        # save the stack pointer
+
+        movl %esp, %ebp
+
+        # Allocate space for our file descriptors
+        # on the stack
+        subl $ST_SIZE_RESERVE, %esp
+
+open_files:
+open_fd_in:
+                        ### OPEN INPUT FILE ###
+                        # open syscall
+        movl $SYS_OPEN, %eax
+                        # input filename into %ebx
+        movl ST_ARGV_1(%ebp), %ebx
+                        # read-only flag
+        movl $O_RDONLY, %ecx
+                        # this doesn't really matter for reading
+        movl $0666, %edx
+                        # call Linux
+        int $LINUX_SYSCALL
+store_fd_in:
+                        # save the given file descriptor
+        movl %eax, ST_FD_IN(%ebp)
+
+open_fd_out:
+                                ### OPEN OUTPUT FILE ###
+                                # open the file
+        movl $SYS_OPEN, %eax
+                                # output filename into %ebx
+        movl ST_ARGV_2(%ebp), %ebx
+                                # flags for writing to the file
+        movl $O_CREAT_WRONLY_TRUNC, %ecx
+                                # mode for new file (if it's created)
+        movl $0666, %edx
+                                # call Linux
+        int $LINUX_SYSCALL
+
+store_fd_out:
+                                # store the file descriptor here
+        movl %eax, ST_FD_OUT(%ebp)
+                                # BEGIN MAIN LOOP
+read_loop_begin:
+                                   # READ IN A BLOCK FROM THE INPUT FILE
+        movl $SYS_READ, %eax
+        movl ST_FD_IN(%ebp), %ebx  # get the input file descriptor
+        movl $BUFFER_DATA, %ecx    # the location to read into
+        movl $BUFFER_SIZE, %edx    # the size of the buffer
+        int $LINUX_SYSCALL         # Size of buffer read is returned in %eax
+        cmpl $END_OF_FILE, %eax    # check for end of file marker
+                                   # if found or on error, go to the end
+        jle end_loop
+continue_read_loop:
+        ### CONVERT THE BLOCK TO UPPER CASE ###
+        pushl $BUFFER_DATA      # location of buffer
+        pushl %eax              # size of the buffer
+        call convert_to_upper
+        popl %eax               # get the size back
+        addl $4, %esp           # restore %esp
+        ### WRITE THE BLOCK OUT TO THE OUTPUT FILE ###
+        movl %eax, %edx         # size of the buffer
+        movl $SYS_WRITE, %eax
+        movl ST_FD_OUT(%ebp), %ebx  # file to use
+        movl $BUFFER_DATA, %ecx     # location of the buffer
+        int $LINUX_SYSCALL
+        jmp read_loop_begin
+
+end_loop:
+                                ###CLOSE THE FILES###
+                                # NOTE - we don't need to do error checking
+                                # on these, because error conditions
+                                # don't signify anything special here
+        movl $SYS_CLOSE, %eax
+        movl ST_FD_OUT(%ebp), %ebx
+        int $LINUX_SYSCALL
+        movl $SYS_CLOSE, %eax
+        movl ST_FD_IN(%ebp), %ebx
+        int $LINUX_SYSCALL
+                                ### EXIT ###
+        movl $SYS_EXIT, %eax
+        movl $0, %ebx
+        int $LINUX_SYSCALL
+
+
+#PURPOSE: This function actually does the
+# conversion to upper case for a block
+#
+#INPUT: The first parameter is the location
+
+# of the block of memory to convert
+# The second parameter is the length of
+# that buffer
+#
+#OUTPUT: This function overwrites the current
+# buffer with the upper-casified version.
+#
+#VARIABLES:
+# %eax - beginning of buffer
+# %ebx - length of buffer
+# %edi - current buffer offset
+# %cl - current byte being examined
+# (first part of %ecx)
+
+        ### CONSTANTS ##
+                                # The lower boundary of our search
+        .equ LOWERCASE_A, 'a'
+                                # The upper boundary of our search
+        .equ LOWERCASE_Z, 'z'
+                                # Conversion between upper and lower case
+        .equ UPPER_CONVERSION, 'A' - 'a'
+                                ### STACK STUFF ###
+        .equ ST_BUFFER_LEN, 8   # Length of buffer
+        .equ ST_BUFFER, 12      # actual buffer
+convert_to_upper:
+        pushl %ebp
+        movl %esp, %ebp
+                        ### SET UP VARIABLES ###
+        movl ST_BUFFER(%ebp), %eax
+        movl ST_BUFFER_LEN(%ebp), %ebx
+        movl $0, %edi
+
+                        # if a buffer with zero length was given
+                        # to us, just leave
+        cmpl $0, %ebx
+        je end_convert_loop
+convert_loop:
+                        # get the current byte
+        movb (%eax,%edi,1), %cl
+                        # go to the next byte unless it is between
+                        #'a' and 'z'
+        cmpb $LOWERCASE_A, %cl
+        jl next_byte
+        cmpb $LOWERCASE_Z, %cl
+        jg next_byte
+                        # otherwise convert the byte to uppercase
+        addb $UPPER_CONVERSION, %cl
+                        # and store it back
+        movb %cl, (%eax,%edi,1)
+
+next_byte:
+        incl %edi #next byte
+        cmpl %edi, %ebx #continue unless
+                        # we've reached the end
+        jne convert_loop
+end_convert_loop:
+                        # no return value, just leave
+        movl %ebp, %esp
+        popl %ebp
+        ret
+
+# vim: expandtab sw=8 sts=8
+</pre>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<p><strong>HeyNow</strong></p>
+<ul>
+<li><p class="first">Write a program that will create a file called heynow.txt and write the words “Hey diddle diddle!” into it.</p>
+<blockquote>
+<pre class="code literal-block">
+ToBeDone
+</pre>
+</blockquote>
+</li>
+</ul>
 </blockquote>
 </blockquote>
 </div>

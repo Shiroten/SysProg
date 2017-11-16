@@ -38,21 +38,21 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 		**ToUpper in C**
 
-			 .. include:: source/toupper/dummy.s
+			 .. include:: source/toupper/toupper.c
 				:code:
 
 		|
 
 		**ToUpper in Java**	
 
-			 .. include:: source/toupper/dummy.s
+			 .. include:: source/toupper/toupper.java
 				:code:
 
 		|
 
 		**ToUpper in Python**
 
-			 .. include:: source/toupper/dummy.s
+			 .. include:: source/toupper/toupper.py
 				:code:
 
 	|	
@@ -85,23 +85,34 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 	|
 
-		**Use the concepts**
-
+			**Use the concepts**
 
 			* Modify the toupper program so that it reads from STDIN and writes to STDOUT instead of using the files on the command-line.
 
 				 .. include:: source/toupper/toupper_sdt/toupper.s
 					:code:
 
+	|
+
+			**ToUpper Buffer Version**
+
 			* Change the size of the buffer.
 
 				 .. include:: source/toupper/toupper_buffer/toupper.s
 					:code:
 
+	|
+
+			**ToUpper BSS Version**
+
 			* Rewrite the program so that it uses storage in the .bss section rather than the stack to store the file descriptors.
 
 				 .. include:: source/toupper/toupper_bss/toupper.s
 					:code:
+
+	|
+
+			**HeyNow**
 
 			* Write a program that will create a file called heynow.txt and write the words “Hey diddle diddle!” into it.
 					
