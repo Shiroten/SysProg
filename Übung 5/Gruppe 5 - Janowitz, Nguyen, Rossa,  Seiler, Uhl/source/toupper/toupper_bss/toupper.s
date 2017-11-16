@@ -57,7 +57,7 @@
         .equ BUFFER_SIZE, 500
         .lcomm BUFFER_DATA, BUFFER_SIZE
         .lcomm FILEIN, 4
-        .lcomm FILEOUT, 5
+        .lcomm FILEOUT, 4
 
         .section .text
 

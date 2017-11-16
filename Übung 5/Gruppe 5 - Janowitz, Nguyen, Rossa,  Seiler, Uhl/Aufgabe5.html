@@ -384,12 +384,12 @@ ul.auto-toc {
     .globl _start
 
 _start:
-    pushl $2        # b
-    pushl $3        # x
+    pushl $1        # b
+    pushl $7        # x
     call  timespow2
     addl  $8, %esp
     pushl %eax
-    pushl $3        # b
+    pushl $0        # b
     pushl $2        # x
     call  timespow2
     addl  $8, %esp
@@ -405,15 +405,15 @@ _start:
 #                    shll %cl, %ebx  (shift ebx left by cl bits)
 .type timespow2, &#64;function
 timespow2:
-    _____________________ # 1 Prolog
-    _____________________ # 2 Prolog
-    _____________________ # 3 Argument holen
-    _____________________ # 4 Argument holen
-    _____________________ # 5 Schieben
-    _____________________ # 6 Ergebnis ablegen
-    _____________________ # 7 Epilog
-    _____________________ # 8 Epilog
-    _____________________ # 9 Zurueckkehren
+    pushl %ebp            # 1 Prolog
+    movl %esp, %ebp       # 2 Prolog
+    movl 12(%ebp), %ebx   # 3 Argument holen
+    movb 8(%ebp), %cl     # 4 Argument holen
+    shll %cl, %ebx        # 5 Schieben
+    movl %ebx, %eax       # 6 Ergebnis ablegen
+    movl %ebp, %esp       # 7 Epilog
+    popl %ebp             # 8 Epilog
+    ret                   # 9 Zurueckkehren
 
 </pre>
 </blockquote>
@@ -480,8 +480,8 @@ Python Code to be added
 </div>
 </blockquote>
 </div>
-<div class="section" id="aufgaben-von-kapitel-5">
-<h1>4. Aufgaben von Kapitel 5</h1>
+<div class="section" id="aufgaben-von-kapitel-5-pgu">
+<h1>4. Aufgaben von Kapitel 5 PGU</h1>
 <blockquote>
 <blockquote>
 <p><strong>Know the concepts</strong></p>
@@ -489,27 +489,44 @@ Python Code to be added
 <ul>
 <li><p class="first">Describe the lifecycle of a file descriptor.</p>
 <blockquote>
-<p><strong>Todo</strong></p>
+<p>A file descriptor is created when we open a file until we close it.</p>
 </blockquote>
 </li>
 <li><p class="first">What are the standard file descriptors and what are they used for?</p>
 <blockquote>
-<p><strong>Todo</strong></p>
+<p>File Descriptor 0, 1 and 2 are the standard one.
+0 is the STDIN, 1 is the STDOUT and 2 is the STDERR
+Where STDIN represend the default keyboard, STDOUT the screen and STDERR                                        is the standard error</p>
 </blockquote>
 </li>
 <li><p class="first">What is a buffer?</p>
 <blockquote>
-<p><strong>Todo</strong></p>
+<p>A Buffer is a place to store a big junk of data for example from the
+read of a file</p>
 </blockquote>
 </li>
 <li><p class="first">What is the difference between the .data section and the .bss section?</p>
 <blockquote>
-<p><strong>Todo</strong></p>
+<p>The .data section is static and the .bss is dynamic for one example.
+Also the .data section stores the initialized data from the source code
+where the .bss holds temporary new data create in the runtime</p>
 </blockquote>
 </li>
 <li><p class="first">What are the system calls related to reading and writing files?</p>
 <blockquote>
-<p><strong>Todo</strong></p>
+<pre class="code literal-block">
+movl $5, %eax   #Open
+int 0x80
+
+movl $4, %eax   #Write
+int 0x80
+
+movl $3, %eax   #Read
+int 0x80
+
+movl $6, %eax   #Close
+int 0x80
+</pre>
 </blockquote>
 </li>
 </ul>
@@ -605,39 +622,14 @@ _start:
         # on the stack
         subl $ST_SIZE_RESERVE, %esp
 
-open_files:
-open_fd_in:
-                        ### OPEN INPUT FILE ###
-                        # open syscall
-        movl $SYS_OPEN, %eax
-                        # input filename into %ebx
-        movl ST_ARGV_1(%ebp), %ebx
-                        # read-only flag
-        movl $O_RDONLY, %ecx
-                        # this doesn't really matter for reading
-        movl $0666, %edx
-                        # call Linux
-        int $LINUX_SYSCALL
 store_fd_in:
-                        # save the given file descriptor
-        movl %eax, ST_FD_IN(%ebp)
-
-open_fd_out:
-                                ### OPEN OUTPUT FILE ###
-                                # open the file
-        movl $SYS_OPEN, %eax
-                                # output filename into %ebx
-        movl ST_ARGV_2(%ebp), %ebx
-                                # flags for writing to the file
-        movl $O_CREAT_WRONLY_TRUNC, %ecx
-                                # mode for new file (if it's created)
-        movl $0666, %edx
-                                # call Linux
-        int $LINUX_SYSCALL
+        # save the given file descriptor
+        movl $0, ST_FD_IN(%ebp)
 
 store_fd_out:
-                                # store the file descriptor here
-        movl %eax, ST_FD_OUT(%ebp)
+        # store the file descriptor here
+        movl $1, ST_FD_OUT(%ebp)
+
                                 # BEGIN MAIN LOOP
 read_loop_begin:
                                    # READ IN A BLOCK FROM THE INPUT FILE
@@ -818,7 +810,12 @@ end_convert_loop:
         # into the output file. This should
         # never exceed 16,000 for various
         # reasons.
-        .equ BUFFER_SIZE, 500
+        .equ BUFFER_SIZE, 20
+
+        #.equ BUFFER_SIZE, 100
+        #.equ BUFFER_SIZE, 500
+        #.equ BUFFER_SIZE, 100000
+
         .lcomm BUFFER_DATA, BUFFER_SIZE
 
         .section .text
@@ -1058,6 +1055,8 @@ end_convert_loop:
         # reasons.
         .equ BUFFER_SIZE, 500
         .lcomm BUFFER_DATA, BUFFER_SIZE
+        .lcomm FILEIN, 4
+        .lcomm FILEOUT, 4
 
         .section .text
 
@@ -1096,7 +1095,7 @@ open_fd_in:
         int $LINUX_SYSCALL
 store_fd_in:
                         # save the given file descriptor
-        movl %eax, ST_FD_IN(%ebp)
+        movl %eax, FILEIN
 
 open_fd_out:
                                 ### OPEN OUTPUT FILE ###
@@ -1113,12 +1112,12 @@ open_fd_out:
 
 store_fd_out:
                                 # store the file descriptor here
-        movl %eax, ST_FD_OUT(%ebp)
+        movl %eax, FILEOUT
                                 # BEGIN MAIN LOOP
 read_loop_begin:
                                    # READ IN A BLOCK FROM THE INPUT FILE
         movl $SYS_READ, %eax
-        movl ST_FD_IN(%ebp), %ebx  # get the input file descriptor
+        movl FILEIN, %ebx          # get the input file descriptor
         movl $BUFFER_DATA, %ecx    # the location to read into
         movl $BUFFER_SIZE, %edx    # the size of the buffer
         int $LINUX_SYSCALL         # Size of buffer read is returned in %eax
@@ -1135,7 +1134,7 @@ continue_read_loop:
         ### WRITE THE BLOCK OUT TO THE OUTPUT FILE ###
         movl %eax, %edx         # size of the buffer
         movl $SYS_WRITE, %eax
-        movl ST_FD_OUT(%ebp), %ebx  # file to use
+        movl FILEOUT, %ebx      # file to use
         movl $BUFFER_DATA, %ecx     # location of the buffer
         int $LINUX_SYSCALL
         jmp read_loop_begin
@@ -1146,10 +1145,10 @@ end_loop:
                                 # on these, because error conditions
                                 # don't signify anything special here
         movl $SYS_CLOSE, %eax
-        movl ST_FD_OUT(%ebp), %ebx
+        movl FILEOUT, %ebx
         int $LINUX_SYSCALL
         movl $SYS_CLOSE, %eax
-        movl ST_FD_IN(%ebp), %ebx
+        movl FILEIN, %ebx
         int $LINUX_SYSCALL
                                 ### EXIT ###
         movl $SYS_EXIT, %eax
@@ -1238,7 +1237,137 @@ end_convert_loop:
 <li><p class="first">Write a program that will create a file called heynow.txt and write the words “Hey diddle diddle!” into it.</p>
 <blockquote>
 <pre class="code literal-block">
-ToBeDone
+# -*- indent-tabs-mode: nil -*- (for Emacs)
+
+# PURPOSE:
+
+        .section .data
+
+        # File name and contents
+file_name:
+        .ascii &quot;heynow.txt\0&quot;
+file_contents:
+        .ascii &quot;Hey diddle diddle!\0&quot;
+
+        #######CONSTANTS########
+        # system call numbers
+        .equ SYS_OPEN, 5
+        .equ SYS_WRITE, 4
+        .equ SYS_READ, 3
+        .equ SYS_CLOSE, 6
+        .equ SYS_EXIT, 1
+
+        # options for open (look at
+        # /usr/include/asm/fcntl.h for
+        # various values. You can combine them
+        # by adding them or ORing them)
+        # This is discussed at greater length
+        # in &quot;Counting Like a Computer&quot;
+        .equ O_RDONLY, 0
+        .equ O_CREAT_WRONLY_TRUNC, 03101
+
+        # standard file descriptors
+        .equ STDIN, 0
+        .equ STDOUT, 1
+        .equ STDERR, 2
+
+        # system call interrupt
+        .equ LINUX_SYSCALL, 0x80
+        .equ END_OF_FILE, 0 #This is the return value
+
+        # of read which means we've
+        # hit the end of the file
+        .equ NUMBER_ARGUMENTS, 2
+
+        .section .bss
+
+        # Buffer - this is where the data is loaded into
+        # from the data file and written from
+        # into the output file. This should
+        # never exceed 16,000 for various
+        # reasons.
+        .equ BUFFER_SIZE, 500
+        .lcomm BUFFER_DATA, BUFFER_SIZE
+
+        .section .text
+
+        # STACK POSITIONS
+        .equ ST_SIZE_RESERVE, 8
+        .equ ST_FD_OUT, -4
+        .globl _start
+
+_start:
+        ### INITIALIZE PROGRAM ###
+        # save the stack pointer
+
+        movl %esp, %ebp
+
+        # Allocate space for our file descriptors
+        # on the stack
+        subl $ST_SIZE_RESERVE, %esp
+
+open_files:
+open_fd_out:
+                                ### OPEN OUTPUT FILE ###
+                                # open the file
+        movl $SYS_OPEN, %eax
+                                # output filename into %ebx
+        movl $file_name, %ebx
+                                # flags for writing to the file
+        movl $O_CREAT_WRONLY_TRUNC, %ecx
+                                # mode for new file (if it's created)
+        movl $0666, %edx
+                                # call Linux
+        int $LINUX_SYSCALL
+
+store_fd_out:
+                                # store the file descriptor here
+        movl %eax, ST_FD_OUT(%ebp)
+
+get_length:
+        # text to write
+        movl $file_contents, %ebx
+        # counter
+        movl $0, %edi
+
+
+length_loop:
+        # get byte
+        movb (%ebx,%edi,1), %cl
+
+        # if zero byte, string is done
+        cmpb $0, %cl
+        je loop_end
+
+        # increment
+        incl %edi
+        jmp length_loop
+
+loop_end:
+
+        ### WRITE THE BLOCK OUT TO THE OUTPUT FILE ###
+        movl %edi, %edx         # size of the buffer
+        movl $SYS_WRITE, %eax
+        movl ST_FD_OUT(%ebp), %ebx  # file to use
+        movl $file_contents, %ecx     # location of the buffer
+        int $LINUX_SYSCALL
+
+close_files:
+                                ###CLOSE THE FILES###
+                                # NOTE - we don't need to do error checking
+                                # on these, because error conditions
+                                # don't signify anything special here
+        movl $SYS_CLOSE, %eax
+        movl ST_FD_OUT(%ebp), %ebx
+        int $LINUX_SYSCALL
+
+                                ### EXIT ###
+        movl $SYS_EXIT, %eax
+        movl $0, %ebx
+        int $LINUX_SYSCALL
+
+
+# vim: expandtab sw=8 sts=8
 </pre>
 </blockquote>
 </li>
