@@ -56,6 +56,8 @@
         # reasons.
         .equ BUFFER_SIZE, 500
         .lcomm BUFFER_DATA, BUFFER_SIZE
+        .lcomm FILEIN, 4
+        .lcomm FILEOUT, 5
 
         .section .text
 
@@ -94,7 +96,7 @@ open_fd_in:
         int $LINUX_SYSCALL
 store_fd_in:
                         # save the given file descriptor
-        movl %eax, ST_FD_IN(%ebp)
+        movl %eax, FILEIN
 
 open_fd_out:
                                 ### OPEN OUTPUT FILE ###
@@ -111,12 +113,12 @@ open_fd_out:
 
 store_fd_out:
                                 # store the file descriptor here
-        movl %eax, ST_FD_OUT(%ebp)
+        movl %eax, FILEOUT
                                 # BEGIN MAIN LOOP
 read_loop_begin:
                                    # READ IN A BLOCK FROM THE INPUT FILE 
         movl $SYS_READ, %eax
-        movl ST_FD_IN(%ebp), %ebx  # get the input file descriptor
+        movl FILEIN, %ebx          # get the input file descriptor
         movl $BUFFER_DATA, %ecx    # the location to read into
         movl $BUFFER_SIZE, %edx    # the size of the buffer
         int $LINUX_SYSCALL         # Size of buffer read is returned in %eax
@@ -133,7 +135,7 @@ continue_read_loop:
         ### WRITE THE BLOCK OUT TO THE OUTPUT FILE ###
         movl %eax, %edx         # size of the buffer
         movl $SYS_WRITE, %eax
-        movl ST_FD_OUT(%ebp), %ebx  # file to use
+        movl FILEOUT, %ebx      # file to use
         movl $BUFFER_DATA, %ecx     # location of the buffer
         int $LINUX_SYSCALL
         jmp read_loop_begin
@@ -144,10 +146,10 @@ end_loop:
                                 # on these, because error conditions
                                 # don't signify anything special here
         movl $SYS_CLOSE, %eax
-        movl ST_FD_OUT(%ebp), %ebx
+        movl FILEOUT, %ebx
         int $LINUX_SYSCALL
         movl $SYS_CLOSE, %eax
-        movl ST_FD_IN(%ebp), %ebx
+        movl FILEIN, %ebx
         int $LINUX_SYSCALL
                                 ### EXIT ###
         movl $SYS_EXIT, %eax
