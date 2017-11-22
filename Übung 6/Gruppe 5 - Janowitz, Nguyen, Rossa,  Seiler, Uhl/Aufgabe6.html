@@ -400,15 +400,228 @@ ul.auto-toc {
 <ul class="simple">
 <li>Schreiben Sie ein Programm in Assembler, das die Anzahl der Zeichen und die Anzahl der Zeilen in einer Textdatei bestimmt und auf den Bildschirm (stdout) schreibt. Der Name der Datei wird als Argument an das Programm übergeben.</li>
 </ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <blockquote>
+<blockquote>
+<strong>char_counter.s</strong></blockquote>
 <pre class="code literal-block">
-Todo: Replace Dummy
+        .type char_counter, &#64;function
+        .globl char_counter
+
+.section .data
+
+        .equ BUFFER_SIZE, 500
+
+        .lcomm BUFFER_DATA, BUFFER_SIZE
+
+.section .text
+
+        ###CONSTANTS##
+        #The lower boundary of our search
+        .equ  LOWERCASE_A, 'a'
+        #The upper boundary of our search
+        .equ  LOWERCASE_Z, 'z'
+
+        ###STACK CONSTANTS###
+        .equ  ST_BUFFER_LEN, 8 #Length of buffer
+        .equ  ST_BUFFER, 12    #actual buffer
+
+char_counter:
+        pushl %ebp
+        movl  %esp, %ebp
+        subl  $4, %esp
+        movl $0, -4(%ebp)
+
+        movl  ST_BUFFER(%ebp), %eax
+        movl  ST_BUFFER_LEN(%ebp), %ebx
+        movl  $0, %edi
+
+        cmpl  $0, %ebx
+        je    char_end_convert_loop
+
+char_loop:
+        movb  (%eax,%edi,1), %cl
+        cmpb  $LOWERCASE_A, %cl
+        jl    char_next_byte
+        cmpb  $LOWERCASE_Z, %cl
+        jg    char_next_byte
+
+        incl -4(%ebp)
+
+char_next_byte:
+        incl  %edi              #next byte
+        cmpl  %edi, %ebx        #continue unless
+                                #we've reached the
+                                #end
+        jne   char_loop
+
+char_end_convert_loop:
+        movl  -4(%ebp), %eax
+        movl  %ebp, %esp
+        popl  %ebp
+        ret
 </pre>
-</blockquote>
 </blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<blockquote>
+<blockquote>
+<strong>line_counter.s</strong></blockquote>
+<pre class="code literal-block">
+        .type line_counter, &#64;function
+        .globl line_counter
+
+.section .data
+
+        .equ BUFFER_SIZE, 500
+        .lcomm BUFFER_DATA, BUFFER_SIZE
+
+.section .text
+
+        ###CONSTANTS##
+        #ASCII Value of linebreak
+        .equ  LINEBREAK, 10
+
+        ###STACK CONSTANTS###
+        .equ  ST_BUFFER_LEN, 8 #Length of buffer
+        .equ  ST_BUFFER, 12    #actual buffer
+
+line_counter:
+        pushl %ebp
+        movl  %esp, %ebp
+        subl  $4, %esp
+        movl $0, -4(%ebp)
+
+        movl  ST_BUFFER(%ebp), %eax
+        movl  ST_BUFFER_LEN(%ebp), %ebx
+        movl  $0, %edi
+
+        cmpl  $0, %ebx
+        je    line_end_convert_loop
+
+line_loop:
+        movb  (%eax,%edi,1), %cl
+        cmpb  $LINEBREAK, %cl
+        jne   line_next_byte
+
+        incl -4(%ebp)
+
+line_next_byte:
+        incl  %edi              #next byte
+        cmpl  %edi, %ebx        #continue unless
+                                #we've reached the
+                                #end
+        jne   line_loop
+
+line_end_convert_loop:
+        movl  -4(%ebp), %eax
+        movl  %ebp, %esp
+        popl  %ebp
+        ret
+</pre>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<blockquote>
+<strong>character_counter.s</strong></blockquote>
+<pre class="code literal-block">
+.include &quot;linux.s&quot;
+
+.section .data
+
+        .equ BUFFER_SIZE, 500
+        .equ O_RDONLY, 0
+        .equ CHARCOUNT, -4
+        .equ LINECOUNT, -8
+        .lcomm BUFFER_DATA, BUFFER_SIZE
+        .lcomm FILEIN, 4
+
+.section .text
+
+char_count:
+        .long 0
+
+line_count:
+        .long 0
+
+        .globl _start
+
+_start:
+        movl  %esp, %ebp
+        subl $8, %esp
+        movl $0, CHARCOUNT(%ebp)
+        movl $0, LINECOUNT(%ebp)
+
+open_file:
+        cmp $2, (%ebp)
+        jne wrong_arguments
+
+        movl  $SYS_OPEN, %eax
+        movl  8(%ebp), %ebx   #Get Filename from Stack
+        movl  $O_RDONLY, %ecx
+        movl  $0666, %edx
+        int   $LINUX_SYSCALL
+
+store_fd_in:
+        movl  %eax, FILEIN
+
+read_loop_begin:
+        movl  $SYS_READ, %eax
+        movl  FILEIN, %ebx
+        movl  $BUFFER_DATA, %ecx
+        movl  $BUFFER_SIZE, %edx
+        int   $LINUX_SYSCALL
+
+        cmpl  $END_OF_FILE, %eax
+        jle   end_loop
+
+continue_read_loop:
+        ### Counter Words
+        pushl $BUFFER_DATA     #location of buffer
+        pushl %eax             #size of the buffer
+        call  char_counter
+        addl  %eax,CHARCOUNT(%ebp)
+        popl  %eax             #get the size back
+        addl  $4, %esp         #restore %esp
+
+        ### Count Linebreaks
+        pushl $BUFFER_DATA     #location of buffer
+        pushl %eax             #size of the buffer
+        call  line_counter
+        addl  %eax,LINECOUNT(%ebp)
+        popl  %eax             #get the size back
+        addl  $4, %esp         #restore %esp
+
+        jmp   read_loop_begin
+
+end_loop:
+        movl  $SYS_CLOSE, %eax
+        movl  FILEIN, %ebx
+        int   $LINUX_SYSCALL
+
+        movl  $SYS_EXIT, %eax
+        movl  CHARCOUNT(%ebp), %ebx
+        #movl  $0, %ebx
+        int   $LINUX_SYSCALL
+
+wrong_arguments:
+        movl  $SYS_EXIT, %eax
+        movl  (%ebp), %ebx
+        int   $LINUX_SYSCALL
+
+
+
+
+
+
+</pre>
+</blockquote>
+</blockquote>
 </blockquote>
 </div>
 <div class="section" id="id2">

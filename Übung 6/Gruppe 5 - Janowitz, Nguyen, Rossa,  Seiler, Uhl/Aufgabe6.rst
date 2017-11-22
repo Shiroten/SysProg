@@ -28,11 +28,27 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 		* Schreiben Sie ein Programm in Assembler, das die Anzahl der Zeichen und die Anzahl der Zeilen in einer Textdatei bestimmt und auf den Bildschirm (stdout) schreibt. Der Name der Datei wird als Argument an das Programm übergeben.
 
-			
-		 .. include:: character_count/dummy.txt
+		|
+
+			**char_counter.s**
+
+		 .. include:: character_count/char_counter.s
 			:code:
 
-	|	
+		|	
+
+			**line_counter.s**
+
+		 .. include:: character_count/line_counter.s
+			:code:
+
+		|
+
+			**character_counter.s**
+
+		 .. include:: character_count/character_counter.s
+			:code:
+
 
 3. Aufgabe 
 ---------------------------------
