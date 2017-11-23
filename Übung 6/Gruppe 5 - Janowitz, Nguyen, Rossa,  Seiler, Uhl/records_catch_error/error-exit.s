@@ -1,12 +1,10 @@
 
     .include "linux.s"
-    .include "count-chars.s"
 
     .equ ST_ERROR_CODE, 8
     .equ ST_ERROR_MSG, 12
 
     .globl error_exit
-
     .type error_exit, @function
 
 error_exit:

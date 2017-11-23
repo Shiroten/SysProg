@@ -24,11 +24,13 @@ write-newline.o: write-newline.s
 count-chars.o: count-chars.s
 	as --32 -g count-chars.s -o count-chars.o
 
-add-year: add-year.o read-records.o write-record.o
-	ld -m elf_i386 add-year.o read-record.o write-record.o -o add-year
+add-year: add-year.o read-records.o write-record.o error-exit.o count-chars.o write-newline.o
+	ld -m elf_i386 add-year.o read-record.o write-record.o error-exit.o count-chars.o write-newline.o -o add-year
 
 add-year.o: add-year.s
 	as --32 -g add-year.s -o add-year.o
+error-exit.o: error-exit.s
+	as --32 -g error-exit.s -o error-exit.o
 
 clean:
 	rm -f toupper.o toupper  *.lst *~

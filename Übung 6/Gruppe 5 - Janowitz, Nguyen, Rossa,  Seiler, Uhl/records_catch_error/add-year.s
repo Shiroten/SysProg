@@ -1,7 +1,6 @@
 
     .include "linux.s"
     .include "record-def.s"
-    .include "error-exit.s"
 
     .section .data
 

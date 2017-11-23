@@ -15,6 +15,7 @@
 
 	#This is where our one parameter is on the stack
 	.equ ST_STRING_START_ADDRESS, 8
+
 count_chars:
 	pushl %ebp
 	movl  %esp, %ebp
