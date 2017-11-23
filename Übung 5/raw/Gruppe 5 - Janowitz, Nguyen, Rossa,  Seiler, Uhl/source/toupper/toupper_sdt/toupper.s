@@ -159,6 +159,7 @@ end_loop:
                                 ### STACK STUFF ###
         .equ ST_BUFFER_LEN, 8   # Length of buffer
         .equ ST_BUFFER, 12      # actual buffer
+
 convert_to_upper:
         pushl %ebp
         movl %esp, %ebp

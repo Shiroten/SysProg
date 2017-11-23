@@ -68,13 +68,18 @@ continue_read_loop:
 	jmp   read_loop_begin
 
 end_loop:
+	pushl LINECOUNT(%ebp)
+        pushl CHARCOUNT(%ebp)
+
+	call  print
+	addl  $8, %esp
+
 	movl  $SYS_CLOSE, %eax
 	movl  FILEIN, %ebx
 	int   $LINUX_SYSCALL
 
 	movl  $SYS_EXIT, %eax
-	movl  CHARCOUNT(%ebp), %ebx
-	#movl  $0, %ebx
+	movl  $0, %ebx
 	int   $LINUX_SYSCALL
 
 wrong_arguments:

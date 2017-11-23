@@ -10,10 +10,10 @@
 .section .text
 
 	###CONSTANTS##
-	#The lower boundary of our search
 	.equ  LOWERCASE_A, 'a'              
-	#The upper boundary of our search
-	.equ  LOWERCASE_Z, 'z'         
+	.equ  LOWERCASE_Z, 'z'
+	.equ  UPPERCASE_A, 'A'              
+	.equ  UPPERCASE_Z, 'Z'           
 
 	###STACK CONSTANTS###
 	.equ  ST_BUFFER_LEN, 8 #Length of buffer
@@ -34,11 +34,22 @@ char_counter:
 
 char_loop:
 	movb  (%eax,%edi,1), %cl
-	cmpb  $LOWERCASE_A, %cl
+
+	cmpb  $UPPERCASE_A, %cl		#Überspringe Zeichen kleiner als A(0x41)
 	jl    char_next_byte
-	cmpb  $LOWERCASE_Z, %cl
+	cmpb  $LOWERCASE_Z, %cl		#Überspringe Zeichen größer  als z(0x7A)
 	jg    char_next_byte
 	
+	cmpb  $UPPERCASE_Z, %cl		#Wenn kleiner als Z(0x5A) incrementiere
+	jle   char_increment
+
+	cmpb  $LOWERCASE_A, %cl		#Wenn größer  als a(0x61) incrementiere
+	jge   char_increment
+
+	jmp   char_next_byte		#Ansonsten überspringe Zeichen
+
+	
+char_increment:	
 	incl -4(%ebp)
 
 char_next_byte:
