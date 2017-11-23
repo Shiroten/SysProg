@@ -37,8 +37,8 @@ _start:
     int $LINUX_SYSCALL
     movl %eax, ST_INPUT_DESCRIPTOR(%ebp)
 
-    cmpl $0, %eax
-    jl   continue_processing
+    cmpl $0,%eax
+    jg   continue_processing
 
     pushl $no_open_file_msg
     pushl $no_open_file_code

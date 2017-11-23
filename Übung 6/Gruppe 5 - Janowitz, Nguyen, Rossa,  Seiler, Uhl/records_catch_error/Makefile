@@ -33,4 +33,4 @@ error-exit.o: error-exit.s
 	as --32 -g error-exit.s -o error-exit.o
 
 clean:
-	rm -f toupper.o toupper  *.lst *~
+	rm -f *.o add-year write-records read-records *.lst *~
