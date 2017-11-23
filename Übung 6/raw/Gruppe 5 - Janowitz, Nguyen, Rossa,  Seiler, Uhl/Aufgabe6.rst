@@ -118,10 +118,20 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 		* Fangen Sie Fehler ab, die beim Öffnen der Dateien auftreten können. Welche Fehlercodes es gibt, finden Sie in der man page "man 2 open". Sie können einen Schreibschutzfehler hervorrufen, wenn Sie die Datei als normaler Anwender an einem nicht erlaubten Ort öffnen, z.B. mit dem Pfad "/meine-datei.txt".
 
-		 .. include:: records_catch_error/dummy.txt
-			:code:
 
-	|
+				**error-exit.s**
+
+			 .. include:: records_catch_error/error-exit.s
+				:code:
+
+		|
+
+				**add-year.s**
+
+			 .. include:: records_catch_error/add-year.s
+				:code:
+
+		|
 
 	**Records with lseek**
 
