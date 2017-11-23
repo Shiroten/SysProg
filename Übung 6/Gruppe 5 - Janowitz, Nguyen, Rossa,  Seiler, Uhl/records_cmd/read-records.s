@@ -4,7 +4,7 @@
 
     .section .data
 file_name:
-    .ascii "test.dat\0"
+    .ascii "est.dat\0"
     .section .bss
     .lcomm record_buffer, RECORD_SIZE
 
@@ -18,13 +18,15 @@ _start:
     #a .data section instead)
     .equ ST_INPUT_DESCRIPTOR, -4
     .equ ST_OUTPUT_DESCRIPTOR, -8
+    .equ ST_ARG_1, 8
+
     #Copy the stack pointer to %ebp
     movl %esp, %ebp
     #Allocate space to hold the file descriptors
     subl $8, %esp
     #Open the file
     movl $SYS_OPEN, %eax
-    movl $file_name, %ebx
+    movl ST_ARG_1(%ebp), %ebx
     movl $0, %ecx #This says to open read-only
 
     movl $0666, %edx

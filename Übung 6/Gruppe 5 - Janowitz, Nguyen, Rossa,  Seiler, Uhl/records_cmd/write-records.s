@@ -57,10 +57,11 @@ record3:
 .long 36
 #This is the name of the file we will write to
 file_name:
-.ascii "test.dat\0"
+.ascii "est.dat\0"
 
 .section .text
 .equ ST_FILE_DESCRIPTOR, -4
+.equ ST_ARG_1, 8
 
 .globl _start
 _start:
@@ -72,7 +73,7 @@ subl $4, %esp
 
 #Open the file
 movl $SYS_OPEN, %eax
-movl $file_name, %ebx
+movl ST_ARG_1(%ebp), %ebx
 movl $0101, %ecx #This says to create if it
 #doesn't exist, and open for
 #writing
