@@ -405,6 +405,177 @@ ul.auto-toc {
 </div>
 <blockquote>
 <blockquote>
+<strong>write.s</strong></blockquote>
+<pre class="code literal-block">
+        .type write, &#64;function
+        .globl write
+
+.section .data
+.section .text
+        .equ  STDOUT, 1
+        .equ  SYS_WRITE, 4
+
+write:
+    pushl %ebp
+    movl  %esp, %ebp
+
+    pushl 8(%ebp)
+    call count_chars
+    addl $4, %esp
+
+    movl %eax, %edx
+    movl $STDOUT, %ebx
+    movl $SYS_WRITE, %eax
+    movl 8(%ebp), %ecx
+    int $0x80
+
+    movl  %ebp, %esp
+    popl  %ebp
+    ret
+</pre>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<blockquote>
+<strong>convert_number.s</strong></blockquote>
+<pre class="code literal-block">
+        .type convert_number, &#64;function
+        .globl convert_number
+
+.section .data
+.section .text
+
+convert_number:
+        ###CONSTANTS###
+        .equ  ST_ASCII_BUFFER, 8
+        .equ  ST_NUMBER, 12
+        .equ ZERO, '0'
+
+    pushl %ebp
+    movl  %esp, %ebp
+
+    movl  $0, %edi
+    movl  ST_NUMBER(%ebp), %eax
+
+convert_loop:
+    movl  $10, %ebx
+    movl  $0, %edx
+
+    div %ebx                    #divides %eax by %ebx, stores modulo at %edx and result at %eax
+
+    addl  $ZERO, %edx
+    pushl %edx
+    incl  %edi
+
+    cmpl $0,%eax
+    je   reverse
+
+    jmp convert_loop
+
+reverse:
+    movl %edi, %eax
+    movl $0, %edi
+    movl ST_ASCII_BUFFER(%ebp), %ebx
+
+reverse_loop:
+    popl  (%ebx,%edi,1)
+    incl  %edi
+    cmpl  %edi, %eax
+    je    convert_end
+    jmp   reverse_loop
+
+convert_end:
+    movl  %ebp, %esp
+    popl  %ebp
+    ret
+</pre>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<blockquote>
+<strong>print.s</strong></blockquote>
+<pre class="code literal-block">
+        .type print, &#64;function
+        .globl print
+
+.section .data
+
+        .equ BUFFER_SIZE, 500
+        .lcomm BUFFER_DATA, BUFFER_SIZE
+        .lcomm LINE_COUNT_ASCII, 100
+        .lcomm CHAR_COUNT_ASCII, 100
+
+.section .text
+
+line_text:
+        .asciz &quot;Anzahl Zeilen: &quot;
+
+char_text:
+        .asciz &quot;Anzahl Character: &quot;
+
+blank_text:
+        .asciz &quot;\n&quot;
+
+        ###CONSTANTS###
+        .equ  ST_LINE_COUNT, 12
+        .equ  ST_CHAR_COUNT, 8
+
+print:
+    pushl %ebp
+    movl  %esp, %ebp
+
+    pushl ST_CHAR_COUNT(%ebp)
+    pushl $CHAR_COUNT_ASCII
+    call convert_number
+    addl $8, %esp
+
+    pushl ST_LINE_COUNT(%ebp)
+    pushl $LINE_COUNT_ASCII
+    call convert_number
+    addl $8, %esp
+
+    pushl $char_text
+    call  write
+    addl  $4, %esp
+
+    pushl $CHAR_COUNT_ASCII
+    call  write
+    addl  $4, %esp
+
+    pushl $blank_text
+    call  write
+    addl  $4, %esp
+
+    pushl $line_text
+    call  write
+    addl  $4, %esp
+
+    pushl $LINE_COUNT_ASCII
+    call  write
+    addl  $4, %esp
+
+    pushl $blank_text
+    call  write
+    addl  $4, %esp
+
+
+finished_reading:
+    movl  %ebp, %esp
+    popl  %ebp
+    ret
+
+
+</pre>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<blockquote>
 <strong>char_counter.s</strong></blockquote>
 <pre class="code literal-block">
         .type char_counter, &#64;function
@@ -419,10 +590,10 @@ ul.auto-toc {
 .section .text
 
         ###CONSTANTS##
-        #The lower boundary of our search
         .equ  LOWERCASE_A, 'a'
-        #The upper boundary of our search
         .equ  LOWERCASE_Z, 'z'
+        .equ  UPPERCASE_A, 'A'
+        .equ  UPPERCASE_Z, 'Z'
 
         ###STACK CONSTANTS###
         .equ  ST_BUFFER_LEN, 8 #Length of buffer
@@ -443,11 +614,22 @@ char_counter:
 
 char_loop:
         movb  (%eax,%edi,1), %cl
-        cmpb  $LOWERCASE_A, %cl
+
+        cmpb  $UPPERCASE_A, %cl         #Überspringe Zeichen kleiner als A(0x41)
         jl    char_next_byte
-        cmpb  $LOWERCASE_Z, %cl
+        cmpb  $LOWERCASE_Z, %cl         #Überspringe Zeichen größer  als z(0x7A)
         jg    char_next_byte
 
+        cmpb  $UPPERCASE_Z, %cl         #Wenn kleiner als Z(0x5A) incrementiere
+        jle   char_increment
+
+        cmpb  $LOWERCASE_A, %cl         #Wenn größer  als a(0x61) incrementiere
+        jge   char_increment
+
+        jmp   char_next_byte            #Ansonsten überspringe Zeichen
+
+
+char_increment:
         incl -4(%ebp)
 
 char_next_byte:
@@ -600,13 +782,18 @@ continue_read_loop:
         jmp   read_loop_begin
 
 end_loop:
+        pushl LINECOUNT(%ebp)
+        pushl CHARCOUNT(%ebp)
+
+        call  print
+        addl  $8, %esp
+
         movl  $SYS_CLOSE, %eax
         movl  FILEIN, %ebx
         int   $LINUX_SYSCALL
 
         movl  $SYS_EXIT, %eax
-        movl  CHARCOUNT(%ebp), %ebx
-        #movl  $0, %ebx
+        movl  $0, %ebx
         int   $LINUX_SYSCALL
 
 wrong_arguments:
@@ -629,14 +816,11 @@ wrong_arguments:
 <blockquote>
 <p><strong>Strukturdiagramm Read-Records</strong></p>
 <blockquote>
-<ul>
-<li><p class="first">Wie ist das Programm im Bartlett in Kapitel 6 strukturiert? Zeichnen Sie in einem Diagramm die Abhängigkeiten der einzelnen Dateien. Mit A ==&gt; B kennzeichnen Sie, dass Datei B die Quelltextdatei A inkludiert. Mit A + B kennzeichnen Sie, dass die Objektdateien A und B miteinander gelinkt werden.</p>
-<blockquote>
-<p><strong>Todo Bild einfügen</strong></p>
-</blockquote>
-</li>
+<ul class="simple">
+<li>Wie ist das Programm im Bartlett in Kapitel 6 strukturiert? Zeichnen Sie in einem Diagramm die Abhängigkeiten der einzelnen Dateien. Mit A ==&gt; B kennzeichnen Sie, dass Datei B die Quelltextdatei A inkludiert. Mit A + B kennzeichnen Sie, dass die Objektdateien A und B miteinander gelinkt werden.</li>
 </ul>
 </blockquote>
+<img alt="teil3.png" src="teil3.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -647,18 +831,290 @@ wrong_arguments:
 <blockquote>
 <p><strong>Going Further - Kapitel 6</strong></p>
 <blockquote>
-<ul class="simple">
-<li>Schreiben Sie das Programm um, so dass Kommandozeilenargumente verwendet werden.</li>
-</ul>
+<ul>
+<li><p class="first">Schreiben Sie das Programm um, so dass Kommandozeilenargumente verwendet werden.</p>
 <blockquote>
+<blockquote>
+<p><strong>add-year.s</strong></p>
+</blockquote>
 <pre class="code literal-block">
-Todo: Replace Dummy
+
+    .include &quot;linux.s&quot;
+    .include &quot;record-def.s&quot;
+
+    .section .data
+
+input_file_name:
+    .ascii &quot;test.dat\0&quot;
+
+output_file_name:
+    .ascii &quot;testout.dat\0&quot;
+    .section .bss
+    .lcomm record_buffer, RECORD_SIZE
+    # Stack offsets of local variables
+    .equ ST_INPUT_DESCRIPTOR, -4
+    .equ ST_OUTPUT_DESCRIPTOR, -8
+    .equ ST_ARG_1, 8
+    .equ ST_ARG_2, 12
+
+    .section .text
+    .globl _start
+_start:
+    # Copy stack pointer and make room for local variables
+    movl %esp, %ebp
+    subl $8, %esp
+    # Open file for reading
+    movl $SYS_OPEN, %eax
+    movl ST_ARG_1(%ebp), %ebx
+    movl $0, %ecx
+    movl $0666, %edx
+    int $LINUX_SYSCALL
+    movl %eax, ST_INPUT_DESCRIPTOR(%ebp)
+    # Open file for writing
+    movl $SYS_OPEN, %eax
+    movl ST_ARG_2(%ebp), %ebx
+    movl $0101, %ecx
+
+    movl $0666, %edx
+    int $LINUX_SYSCALL
+    movl %eax, ST_OUTPUT_DESCRIPTOR(%ebp)
+loop_begin:
+    pushl ST_INPUT_DESCRIPTOR(%ebp)
+    pushl $record_buffer
+    call read_record
+    addl $8, %esp
+    # Returns the number of bytes read.
+    # If it isn't the same number we
+    # requested, then it's either an
+    # end-of-file, or an error
+
+    # quitting
+    cmpl $RECORD_SIZE, %eax
+    jne loop_end
+
+    # Increment the age
+    incl record_buffer + RECORD_AGE
+
+    # Write the record out
+    pushl ST_OUTPUT_DESCRIPTOR(%ebp)
+    pushl $record_buffer
+    call write_record
+    addl $8, %esp
+    jmp loop_begin
+loop_end:
+    movl $SYS_EXIT, %eax
+    movl $0, %ebx
+    int $LINUX_SYSCALL
+
+
+# vim: expandtab ts=4 sw=4
 </pre>
 </blockquote>
+</li>
+</ul>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<blockquote>
+<strong>read-records.s</strong></blockquote>
+<pre class="code literal-block">
+
+    .include &quot;linux.s&quot;
+    .include &quot;record-def.s&quot;
+
+    .section .data
+file_name:
+    .ascii &quot;est.dat\0&quot;
+    .section .bss
+    .lcomm record_buffer, RECORD_SIZE
+
+    .section .text
+    #Main program
+    .globl _start
+_start:
+    #These are the locations on the stack where
+    #we will store the input and output descriptors
+    #(FYI - we could have used memory addresses in
+    #a .data section instead)
+    .equ ST_INPUT_DESCRIPTOR, -4
+    .equ ST_OUTPUT_DESCRIPTOR, -8
+    .equ ST_ARG_1, 8
+
+    #Copy the stack pointer to %ebp
+    movl %esp, %ebp
+    #Allocate space to hold the file descriptors
+    subl $8, %esp
+    #Open the file
+    movl $SYS_OPEN, %eax
+    movl ST_ARG_1(%ebp), %ebx
+    movl $0, %ecx #This says to open read-only
+
+    movl $0666, %edx
+    int $LINUX_SYSCALL
+    #Save file descriptor
+    movl %eax, ST_INPUT_DESCRIPTOR(%ebp)
+    #Even though it's a constant, we are
+    #saving the output file descriptor in
+    #a local variable so that if we later
+    #decide that it isn't always going to
+    #be STDOUT, we can change it easily.
+    movl $STDOUT, ST_OUTPUT_DESCRIPTOR(%ebp)
+record_read_loop:
+    pushl ST_INPUT_DESCRIPTOR(%ebp)
+    pushl $record_buffer
+    call read_record
+    addl $8, %esp
+    #Returns the number of bytes read.
+    #If it isn't the same number we
+    #requested, then it's either an
+    #end-of-file, or an error, so we're
+    #quitting
+    cmpl $RECORD_SIZE, %eax
+    jne finished_reading
+    #Otherwise, print out the first name
+    #but first, we must know it's size
+    pushl $RECORD_FIRSTNAME + record_buffer
+    call count_chars
+    addl $4, %esp
+
+    movl %eax, %edx
+    movl ST_OUTPUT_DESCRIPTOR(%ebp), %ebx
+    movl $SYS_WRITE, %eax
+    movl $RECORD_FIRSTNAME + record_buffer, %ecx
+    int $LINUX_SYSCALL
+    pushl ST_OUTPUT_DESCRIPTOR(%ebp)
+    call write_newline
+    addl $4, %esp
+    jmp record_read_loop
+finished_reading:
+    movl $SYS_EXIT, %eax
+    movl $0, %ebx
+    int $LINUX_SYSCALL
+
+# vim: expandtab ts=4 sw=4
+</pre>
 </blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<blockquote>
+<blockquote>
+<strong>write-records.s</strong></blockquote>
+<pre class="code literal-block">
+.include &quot;linux.s&quot;
+.include &quot;record-def.s&quot;
+
+.section .data
+#Constant data of the records we want to write
+#Each text data item is padded to the proper
+#length with null (i.e. 0) bytes.
+#.rept is used to pad each item. .rept tells
+#the assembler to repeat the section between
+#.rept and .endr the number of times specified.
+#This is used in this program to add extra null
+#characters at the end of each field to fill
+#it up
+record1:
+.ascii &quot;Fredrick\0&quot;
+.rept 31 #Padding to 40 bytes
+.byte 0
+.endr
+.ascii &quot;Bartlett\0&quot;
+
+.rept 31 #Padding to 40 bytes
+.byte 0
+.endr
+.ascii &quot;4242 S Prairie\nTulsa, OK 55555\0&quot;
+.rept 209 #Padding to 240 bytes
+.byte 0
+.endr
+.long 45
+record2:
+.ascii &quot;Marilyn\0&quot;
+.rept 32 #Padding to 40 bytes
+.byte 0
+.endr
+.ascii &quot;Taylor\0&quot;
+.rept 33 #Padding to 40 bytes
+.byte 0
+.endr
+.ascii &quot;2224 S Johannan St\nChicago, IL 12345\0&quot;
+.rept 203 #Padding to 240 bytes
+.byte 0
+.endr
+.long 29
+record3:
+.ascii &quot;Derrick\0&quot;
+.rept 32 #Padding to 40 bytes
+.byte 0
+.endr
+
+.ascii &quot;McIntire\0&quot;
+.rept 31 #Padding to 40 bytes
+.byte 0
+.endr
+.ascii &quot;500 W Oakland\nSan Diego, CA 54321\0&quot;
+.rept 206 #Padding to 240 bytes
+.byte 0
+.endr
+.long 36
+#This is the name of the file we will write to
+file_name:
+.ascii &quot;est.dat\0&quot;
+
+.section .text
+.equ ST_FILE_DESCRIPTOR, -4
+.equ ST_ARG_1, 8
+
+.globl _start
+_start:
+#Copy the stack pointer to %ebp
+movl %esp, %ebp
+
+#Allocate space to hold the file descriptor
+subl $4, %esp
+
+#Open the file
+movl $SYS_OPEN, %eax
+movl ST_ARG_1(%ebp), %ebx
+movl $0101, %ecx #This says to create if it
+#doesn't exist, and open for
+#writing
+movl $0666, %edx
+int $LINUX_SYSCALL
+#Store the file descriptor away
+movl %eax, ST_FILE_DESCRIPTOR(%ebp)
+
+#Write the first record
+pushl ST_FILE_DESCRIPTOR(%ebp)
+pushl $record1
+call write_record
+addl $8, %esp
+#Write the second record
+pushl ST_FILE_DESCRIPTOR(%ebp)
+pushl $record2
+call write_record
+addl $8, %esp
+#Write the third record
+pushl ST_FILE_DESCRIPTOR(%ebp)
+pushl $record3
+call write_record
+addl $8, %esp
+#Close the file descriptor
+movl $SYS_CLOSE, %eax
+movl ST_FILE_DESCRIPTOR(%ebp), %ebx
+int $LINUX_SYSCALL
+#Exit the program
+movl $SYS_EXIT, %eax
+movl $0, %ebx
+int $LINUX_SYSCALL
+</pre>
+</blockquote>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</blockquote>
 <p><strong>Error Catch</strong></p>
 <blockquote>
 <ul class="simple">
@@ -680,7 +1136,41 @@ Todo: Replace Dummy
 </ul>
 <blockquote>
 <pre class="code literal-block">
-Todo: Replace Dummy
+        .include &quot;record-def.s&quot;
+        .include &quot;linux.s&quot;
+
+#PURPOSE:   This function reads a record from the file
+#           descriptor
+#
+#INPUT:     The file descriptor and a buffer
+#
+#OUTPUT:    This function writes the data to the buffer
+#           and returns a status code.
+#
+#STACK LOCAL VARIABLES
+        .equ ST_READ_BUFFER, 8
+        .equ ST_FILEDES, 12
+        .section .text
+        .globl read_record
+        .type read_record, &#64;function
+read_record:
+        pushl %ebp
+        movl  %esp, %ebp
+
+        pushl %ebx
+        movl  ST_FILEDES(%ebp), %ebx
+        movl  ST_READ_BUFFER(%ebp), %ecx
+        movl  $RECORD_SIZE, %edx
+        movl  $SYS_READ, %eax
+        int   $LINUX_SYSCALL
+
+        #NOTE - %eax has the return value, which we will
+        #       give back to our calling program
+        popl  %ebx
+
+        movl  %ebp, %esp
+        popl  %ebp
+        ret
 </pre>
 </blockquote>
 </blockquote>

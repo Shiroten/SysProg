@@ -28,6 +28,29 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 		* Schreiben Sie ein Programm in Assembler, das die Anzahl der Zeichen und die Anzahl der Zeilen in einer Textdatei bestimmt und auf den Bildschirm (stdout) schreibt. Der Name der Datei wird als Argument an das Programm übergeben.
 
+
+
+		|
+
+			**write.s**
+
+		 .. include:: character_count/write.s
+			:code:
+
+		|
+
+			**convert_number.s**
+
+		 .. include:: character_count/convert_number.s
+			:code:
+
+		|
+
+			**print.s**
+
+		 .. include:: character_count/print.s
+			:code:
+
 		|
 
 			**char_counter.s**
@@ -57,7 +80,7 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 		* Wie ist das Programm im Bartlett in Kapitel 6 strukturiert? Zeichnen Sie in einem Diagramm die Abhängigkeiten der einzelnen Dateien. Mit A ==> B kennzeichnen Sie, dass Datei B die Quelltextdatei A inkludiert. Mit A + B kennzeichnen Sie, dass die Objektdateien A und B miteinander gelinkt werden.
 
-			**Todo Bild einfügen**
+	.. image:: teil3.png
 
 	|
 
@@ -69,11 +92,27 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 
 		* Schreiben Sie das Programm um, so dass Kommandozeilenargumente verwendet werden.
 
-		 .. include:: records_cmd/dummy.txt
-			:code:
 
-	|
+				**add-year.s**
 
+			 .. include:: records_cmd/add-year.s
+				:code:
+
+		|
+
+				**read-records.s**
+
+			 .. include:: records_cmd/read-records.s
+				:code:
+
+		|
+			
+				**write-records.s**
+
+			 .. include:: records_cmd/write-records.s
+				:code:
+
+		|
 	
 	**Error Catch**
 
@@ -89,7 +128,7 @@ Von: 	Ivo Janowitz, Nguyen Anh Quang, Tillman Rossa, Roman Seiler, Alexander Uhl
 		* Schreiben Sie ein Programm mit dem Sie auswählen können, welcher Datensatz ausgegeben werden soll. Sie geben auf der Kommandozeile einfach die Nummer 0, 1, 2, ... an, dann wird der jeweilige Datensatz ausgegeben. Mit dem Systemaufruf lseek() können Sie schnell an eine beliebige Stelle in der Datei gehen. Der Funktionscode für lseek in Register eax ist 19. Siehe "man 2 lseek".
 
 
-		 .. include:: records_lseek/dummy.txt
+		 .. include:: records_lseek/read-record.s
 			:code:
 
         
